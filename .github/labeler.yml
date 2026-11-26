@@ -1,0 +1,8 @@
+website:
+  - '*.html'
+  - '*.css'
+  - '*.js'
+  - '*.svg'
+maintenance:
+  - '.github/**'
+  - 'README.md'
