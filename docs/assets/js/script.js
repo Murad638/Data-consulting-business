@@ -5,7 +5,7 @@ function initPage(){
  if(toggle){toggle.onclick=()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));};}
  document.querySelectorAll('.drop').forEach(d=>{d.open=false;}); if(nav){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}
  const file=(window.previewRoute||location.pathname.split('/').pop()||'index.html').split(/[?#]/)[0];
- document.querySelectorAll('.nav a').forEach(a=>{if(a.getAttribute('href')===file)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+ document.querySelectorAll('.nav a').forEach(a=>{if(new URL(a.href,location.href).pathname.split('/').pop()===file)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
  if(typeof initLabs==='function')initLabs();
  document.querySelectorAll('[data-simulator]').forEach(root=>{
  const ranges=[...root.querySelectorAll('input')],get=id=>root.querySelector('#'+id);

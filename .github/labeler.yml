@@ -1,11 +1,9 @@
 website:
-  - '*.html'
-  - 'assets/**'
-  - 'sitemap.xml'
+  - 'docs/**'
 maintenance:
   - '.github/**'
   - 'tests/**'
   - 'README.md'
-  - 'docs/**'
+  - 'documentation/**'
   - 'package.json'
   - 'playwright.config.cjs'

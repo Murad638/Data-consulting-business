@@ -2,13 +2,13 @@
 
 ## Editing the website
 
-- Content and page metadata: the corresponding root HTML file.
-- Shared layout, colours, typography and responsive design: assets/css/styles.css.
-- Navigation, inquiry feedback and calculator: assets/js/script.js.
-- Analytics Lab data generation, aggregation, charts and interactions: assets/js/lab.js.
-- New images and icons: assets/images/.
+- Content and page metadata: the corresponding HTML file under docs/ (homepage) or docs/pages/ (other pages).
+- Shared layout, colours, typography and responsive design: docs/assets/css/styles.css.
+- Navigation, inquiry feedback and calculator: docs/assets/js/script.js.
+- Analytics Lab data generation, aggregation, charts and interactions: docs/assets/js/lab.js.
+- New images and icons: docs/assets/images/.
 - When modifying CSS or JS, update the asset query version in all HTML references to avoid stale browser caches.
-- Preserve existing page URLs, canonical URLs and sitemap entries unless a deliberate URL migration is planned.
+- The V10 migration changes individual page URLs to /pages/ paths. Preserve the new paths, canonical URLs and sitemap entries unless another deliberate migration is planned.
 
 ## Contact and privacy
 
@@ -22,14 +22,14 @@ All nine dashboard models use synthetic data. Demonstrations support interactive
 
 ## Search visibility
 
-The canonical URLs and sitemap.xml use the GitHub Pages project URL. Verify the URL-prefix property in Google Search Console, submit the sitemap and request homepage indexing. Indexing and ranking are not guaranteed. Update canonical URLs, sitemap and the FormSubmit return address if a custom domain is adopted. A robots.txt for a host belongs at its root, not the project subdirectory.
+The canonical URLs and docs/sitemap.xml use the GitHub Pages project URL. Verify the URL-prefix property in Google Search Console, submit the sitemap and request homepage indexing. Indexing and ranking are not guaranteed. Update canonical URLs, sitemap and the FormSubmit return address if a custom domain is adopted. A robots.txt for a host belongs at its root, not the project subdirectory.
 
 ## Release checklist
 
 - Confirm the branch was based on current main.
 - Review the PR diff and wait for all required checks.
 - Owner merges using the configured protection workflow.
-- Confirm GitHub Pages deployment succeeded for the new commit.
+- Confirm GitHub Pages publishes main from /docs and deployment succeeded for the new commit.
 - Open the homepage, Analytics Lab and contact page on desktop and mobile.
 - Test contact delivery when form behaviour changes.
 - Confirm the development branch is deleted after merging, if configured.
@@ -41,3 +41,7 @@ Old website ZIP files were removed from the current tree to keep the project tid
 ## CI and troubleshooting
 
 The CI workflow is .github/workflows/ci.yml; the required job remains website-tests. Playwright reports and screenshots are available as workflow artifacts for seven days. A red protected-ref warning with green checks may indicate that the owner-only access ruleset requires explicit bypass. Do not bypass failed quality checks or change the rulesets just to make a release pass.
+
+## GitHub Pages setup
+
+After merging the folder migration, select Settings → Pages → Deploy from a branch → main → /docs → Save. The repository root is no longer the website source. Individual URLs changed; update external links and re-submit the sitemap. A brief outage is possible until Pages is reconfigured and deployed. The public homepage URL is unchanged.
