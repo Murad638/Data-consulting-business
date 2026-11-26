@@ -114,7 +114,7 @@ function initLabs(){document.querySelectorAll('[data-lab]').forEach(root=>{
  root.addEventListener('pointerover',e=>{const el=target(e);if(el&&e.pointerType==='mouse'&&!pinnedTip)showTip(el,e.clientX,e.clientY)});
  root.addEventListener('pointermove',e=>{const el=target(e);if(el&&activeTip===el&&e.pointerType==='mouse'&&!pinnedTip)showTip(el,e.clientX,e.clientY)});
  root.addEventListener('pointerout',e=>{const el=target(e);if(el&&activeTip===el&&!pinnedTip&&!el.contains(e.relatedTarget))hideTip()});
- root.addEventListener('focusin',e=>{const el=target(e);if(el&&!pinnedTip&&el.matches(':focus-visible')){const r=el.getBoundingClientRect();showTip(el,r.left+r.width/2,r.top+r.height/2)}});
+ root.addEventListener('focusin',e=>{const el=target(e);if(el&&!pinnedTip&&(!el.classList.contains('metric-help')||el.matches(':focus-visible'))){const r=el.getBoundingClientRect();showTip(el,r.left+r.width/2,r.top+r.height/2)}});
  root.addEventListener('focusout',e=>{if(target(e)===activeTip)hideTip()});
  document.addEventListener('pointerdown',e=>{if(activeTip&&!activeTip.contains(e.target))hideTip()},{capture:true});
  document.addEventListener('scroll',()=>{if(activeTip)hideTip()},{capture:true,passive:true});
