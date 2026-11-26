@@ -1,15 +1,82 @@
-# DataProfit — launch readiness
+# DataProfit
 
-Static HTML/CSS/JavaScript site. All dashboards use synthetic data for interactive viewing only; CSV export is intentionally disabled. Charts support hover/tap values, month and segment drill-down and legend emphasis. Browser-delivered demo data is not confidential and can be inspected in source code.
+Independent data consulting website for small and growing businesses, based in Estonia and working in English.
 
-## Local development
-Run `npm install`, `npx playwright install chromium`, then `npm test`. CI validates JavaScript, chart arithmetic, SEO, links, responsive layouts, calculator and mocked form submission. Browser reports and screenshots are uploaded as artifacts. No real email is sent by CI.
+[Live website](https://murad638.github.io/Data-consulting-business/) · [CI and deployments](https://github.com/Murad638/Data-consulting-business/actions)
 
-## Contact form
-The form uses FormSubmit.co and the existing business Gmail address. After approved deployment, submit a dummy inquiry from the live site, open the activation email in the business inbox, then send another dummy inquiry and verify delivery. Keep spam prevention enabled. Review provider privacy and processing terms before accepting customer inquiries. Visitors send inquiries in the browser without opening an email app, and return to the website after submission. Direct email remains available as an optional fallback. No API keys are needed in the repository.
+## What this project does
 
-## Search visibility
-The sitemap and canonical URLs use https://murad638.github.io/Data-consulting-business/. After deployment, verify that URL-prefix property in Google Search Console, submit sitemap.xml and request homepage indexing. Robots.txt belongs at the hostname root, not this project subdirectory. Update URLs when moving to a custom domain. Indexing and ranking are not guaranteed.
+- Explains consulting, engineering, business intelligence, reporting automation, modelling and ongoing data partnership services.
+- Demonstrates nine interactive analytics models and a profit scenario calculator using synthetic data.
+- Accepts consultation inquiries through FormSubmit using a masked recipient identifier.
 
-## Workflow
-Create a fresh Murad_Khalilov branch from main, run checks and request review before merging. Merged branches are automatically deleted. Do not merge before deployment approval because GitHub Pages may deploy main automatically.
+This is a static HTML, CSS and JavaScript website, hosted on GitHub Pages. There is no application backend, database or production client dataset. Node.js is used for local testing only.
+
+## Repository structure
+
+```text
+Data-consulting-business/
+├── index.html                 # Homepage
+├── about.html                 # About the practice
+├── services.html              # Service overview
+├── consulting.html            # Consulting
+├── engineering.html           # Data engineering
+├── intelligence.html          # Business intelligence
+├── automation.html            # Reporting automation
+├── modelling.html             # Data modelling
+├── partnership.html           # Ongoing partnership
+├── solutions.html             # Business use cases
+├── work.html                  # Analytics Lab and calculator
+├── contact.html               # Consultation inquiry
+├── privacy.html               # Privacy and data handling
+├── sitemap.xml                # Search engine sitemap
+├── assets/
+│   ├── css/styles.css         # Shared visual styles
+│   ├── js/script.js           # Navigation, forms and calculator
+│   ├── js/lab.js              # Synthetic data, metrics and charts
+│   └── images/favicon.svg     # Site icon
+├── tests/                     # Unit tests, browser tests, local server
+├── docs/                      # Maintenance and release guide
+├── .github/
+│   ├── workflows/             # CI, labelling and issue summary
+│   └── labeler.yml
+├── package.json
+├── playwright.config.cjs
+└── README.md
+```
+
+HTML pages stay at the repository root intentionally: GitHub Pages publishes from the existing root and established page URLs must remain valid. Assets are grouped by responsibility. Old ZIP snapshots are no longer in the current tree; Git history retains earlier versions.
+
+## Run locally
+
+Prerequisite: Node.js 22 and npm.
+
+```bash
+npm install
+npx playwright install chromium
+node tests/server.cjs
+```
+
+Open http://127.0.0.1:4173/Data-consulting-business/ in a browser. Stop the server with Ctrl+C before running browser tests (the test runner starts its own server).
+
+## Run tests
+
+```bash
+npm test
+```
+
+Use `npm run test:unit` for JavaScript syntax, dashboard arithmetic, asset references and SEO checks, or `npm run test:browser` for Playwright tests of links, responsive layouts, navigation, calculator, charts and the inquiry form. Browser tests cover desktop, tablet and mobile. Form submission is mocked; CI never sends a real inquiry.
+
+## Development and deployment
+
+1. Start a fresh `Murad_Khalilov` branch from the current `main`.
+2. Make changes, run tests and open a pull request.
+3. Wait for the required `website-tests` check and review the changes.
+4. The repository owner performs the merge. The owner-only ruleset may require an explicit bypass checkbox; the separate Production Quality ruleset requires passing tests.
+5. GitHub Pages deploys `main` automatically. Verify the deployment and live website.
+
+Do not push directly to `main`, disable protections or merge on behalf of the owner. The owner-only bypass configuration does not establish independent human identity if an integration uses the owner's credentials.
+
+## Maintenance
+
+See [Maintenance guide](docs/maintenance.md) for asset changes, contact verification, search visibility, demo data and release checks.

@@ -1,8 +1,11 @@
 website:
   - '*.html'
-  - '*.css'
-  - '*.js'
-  - '*.svg'
+  - 'assets/**'
+  - 'sitemap.xml'
 maintenance:
   - '.github/**'
+  - 'tests/**'
   - 'README.md'
+  - 'docs/**'
+  - 'package.json'
+  - 'playwright.config.cjs'
