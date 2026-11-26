@@ -1,15 +1,103 @@
-# DataProfit — launch readiness
+# DataProfit
 
-Static HTML/CSS/JavaScript site. All dashboards use synthetic data for interactive viewing only; CSV export is intentionally disabled. Charts support hover/tap values, month and segment drill-down and legend emphasis. Browser-delivered demo data is not confidential and can be inspected in source code.
+Independent data consulting website for small and growing businesses, based in Estonia and working in English.
+
+[Live website](https://murad638.github.io/Data-consulting-business/) · [CI and deployments](https://github.com/Murad638/Data-consulting-business/actions)
+
+## Overview
+
+DataProfit presents consulting, engineering, business intelligence, reporting automation, modelling and ongoing data partnership services. Its Analytics Lab demonstrates nine interactive analytics models and a profit scenario calculator using synthetic data. The consultation form sends inquiries through FormSubmit using a masked recipient identifier.
+
+The website uses plain HTML, CSS and JavaScript and runs on GitHub Pages. No application backend, database or customer dataset is required. Node.js and Playwright are development and testing tools only.
+
+## Repository structure
+
+```text
+Data-consulting-business/
+├── docs/                         # Only the public website is published
+│   ├── index.html                # Homepage
+│   ├── sitemap.xml
+│   ├── .nojekyll
+│   ├── pages/
+│   │   ├── services/
+│   │   │   ├── services.html      # Service overview
+│   │   │   ├── consulting.html
+│   │   │   ├── engineering.html
+│   │   │   ├── intelligence.html
+│   │   │   ├── automation.html
+│   │   │   ├── modelling.html
+│   │   │   └── partnership.html
+│   │   ├── analytics/work.html    # Analytics Lab and calculator
+│   │   ├── company/
+│   │   │   ├── about.html
+│   │   │   ├── contact.html
+│   │   │   └── privacy.html
+│   │   └── solutions.html
+│   └── assets/
+│       ├── css/styles.css
+│       ├── js/
+│       │   ├── script.js          # Navigation, forms, calculator
+│       │   └── lab.js             # Demo data, metrics and charts
+│       └── images/favicon.svg
+├── documentation/
+│   └── maintenance.md
+├── tests/                        # Unit tests, browser tests, local server
+├── .github/
+│   ├── workflows/                # CI, labeling and issue summaries
+│   └── labeler.yml
+├── .gitignore
+├── package.json
+├── playwright.config.cjs
+└── README.md
+```
+
+The `docs/` name is required by GitHub Pages' branch-based subdirectory publishing option. Repository documentation, tests and tooling remain outside the published folder. Old ZIP snapshots are removed from the current tree; earlier versions remain in Git history.
 
 ## Local development
-Run `npm install`, `npx playwright install chromium`, then `npm test`. CI validates JavaScript, chart arithmetic, SEO, links, responsive layouts, calculator and mocked form submission. Browser reports and screenshots are uploaded as artifacts. No real email is sent by CI.
 
-## Contact form
-The form uses FormSubmit.co and the existing business Gmail address. After approved deployment, submit a dummy inquiry from the live site, open the activation email in the business inbox, then send another dummy inquiry and verify delivery. Keep spam prevention enabled. Review provider privacy and processing terms before accepting customer inquiries. Visitors send inquiries in the browser without opening an email app, and return to the website after submission. Direct email remains available as an optional fallback. No API keys are needed in the repository.
+Prerequisite: Node.js 22 and npm.
 
-## Search visibility
-The sitemap and canonical URLs use https://murad638.github.io/Data-consulting-business/. After deployment, verify that URL-prefix property in Google Search Console, submit sitemap.xml and request homepage indexing. Robots.txt belongs at the hostname root, not this project subdirectory. Update URLs when moving to a custom domain. Indexing and ranking are not guaranteed.
+```bash
+npm install
+npx playwright install chromium
+node tests/server.cjs
+```
 
-## Workflow
-Create a fresh Murad_Khalilov branch from main, run checks and request review before merging. Merged branches are automatically deleted. Do not merge before deployment approval because GitHub Pages may deploy main automatically.
+Open http://127.0.0.1:4173/Data-consulting-business/. Stop the local server with Ctrl+C before running browser tests (Playwright starts its own server).
+
+## Testing
+
+```bash
+npm test
+```
+
+- `npm run test:unit`: JavaScript syntax, analytics arithmetic, local asset/link resolution and SEO metadata.
+- `npm run test:browser`: desktop, tablet and mobile navigation, responsive layout, charts, calculator and mocked contact submission.
+- GitHub Actions runs both suites and uploads browser reports. CI does not send real email.
+
+## Deploy to GitHub Pages
+
+One-time setup after merging the folder migration into main:
+
+1. Open repository Settings → Pages.
+2. Under Build and deployment, choose **Deploy from a branch**.
+3. Select branch **main** and folder **/docs**, then click Save.
+4. Check the Pages deployment in Actions and open the live website.
+
+The homepage and sitemap retain their public URLs. Individual pages now live under /pages/; old flat page URLs are not retained. Update any external links and resubmit the sitemap in Search Console. The FormSubmit return address and page canonical URLs have been updated to the new paths. Test real inquiry delivery after deployment.
+
+Do not choose the repository root as the publishing source after the migration: it no longer contains index.html.
+
+## Development workflow
+
+1. Create a fresh `Murad_Khalilov` branch from current `main`.
+2. Make changes, run tests and open a pull request.
+3. Wait for the required `website-tests` check and review.
+4. The repository owner merges. The owner-only ruleset may require explicit bypass; the separate Production Quality ruleset requires passing checks.
+5. GitHub Pages deploys main automatically once configured. Verify the new deployment.
+
+Do not push directly to main or merge on behalf of the owner. Technical identity separation depends on the integration's permissions.
+
+## Maintenance
+
+See [the maintenance guide](documentation/maintenance.md) for page editing, contact verification, analytics data, search visibility and release checks.
