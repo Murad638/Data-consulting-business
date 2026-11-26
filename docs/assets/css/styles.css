@@ -106,3 +106,9 @@ html,body{background-color:#fafbfe;color:#202338;min-height:100%}body{color-sche
   #integrations .integration-output{min-height:92px;padding:12px 8px;gap:8px;align-content:center}
   #integrations .integration-output svg{max-width:136px;height:40px}
 }
+
+/* Align the Services dropdown chevron with its navigation label. */
+.nav .drop summary{display:flex;align-items:center;gap:7px}
+.nav .drop summary .nav-chevron{display:block;flex:0 0 14px;width:14px;height:14px;color:currentColor;transition:transform .15s ease}
+.nav .drop[open] summary .nav-chevron{transform:rotate(180deg)}
+@media(prefers-reduced-motion:reduce){.nav .drop summary .nav-chevron{transition:none}}
