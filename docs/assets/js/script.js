@@ -21,9 +21,10 @@ function initPage(){
  const amounts=[m.p,m.ad,fixed,m.tax,Math.max(0,m.net)],total=Math.max(1,...[amounts.reduce((a,b)=>a+b,0)]);
  get('costbars').innerHTML=amounts.map((n,i)=>'<span style="width:'+(n/total*100)+'%;background:'+colors[i]+'"></span>').join('');
  get('costlegend').innerHTML=labels.map((label,i)=>'<div><i style="background:'+colors[i]+'"></i><span>'+label+'</span><b>'+fmt(amounts[i])+'</b></div>').join('');
- get('calcInsight').textContent=m.net<0?'This scenario makes a loss of '+fmt(-m.net)+'. Review variable costs, pricing and fixed expenses.':be===null?'Variable costs consume all sales; review pricing and cost ratios.':'At these cost assumptions, monthly break-even revenue is '+fmt(be)+'. Compare scenarios before deciding how much to spend on growth.';
+ get('calcInsight').textContent='Key finding: '+(m.net<0?'The scenario produces an estimated monthly loss of '+fmt(-m.net):'Estimated monthly profit after illustrative tax is '+fmt(m.net))+'. '+(be===null?'Business implication: variable costs equal or exceed revenue, so a positive contribution margin cannot be achieved at these assumptions. Recommended action: review pricing and variable cost ratios.':'Business implication: monthly break-even revenue is '+fmt(be)+'; scenario revenue is '+fmt(Math.abs(revenue-be))+(revenue>=be?' at or above':' below')+' that threshold. Recommended action: compare pricing, sales and cost assumptions before committing resources.');
  }ranges.forEach(r=>r.oninput=calc);root.querySelector('[data-reset]').onclick=()=>{ranges.forEach(r=>r.value=r.defaultValue);calc()};calc();
  });
+ document.querySelectorAll('.static-help').forEach(button=>{const explanation=button.nextElementSibling;const set=open=>{explanation.hidden=!open;button.setAttribute('aria-expanded',String(open));};button.addEventListener('click',()=>set(explanation.hidden));button.addEventListener('keydown',e=>{if(e.key==='Escape')set(false);});});
  const form=document.querySelector('#inquiry');if(form){
  const map={consulting:'Data consulting',engineering:'Data engineering',intelligence:'Business intelligence',automation:'Reporting automation',modelling:'Data modelling',partnership:'Ongoing data partnership'};
  const params=new URLSearchParams(window.previewQuery||location.search);
