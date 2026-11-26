@@ -1,6 +1,6 @@
 # DataProfit — launch readiness
 
-Static HTML/CSS/JavaScript site. All dashboards use synthetic data for interactive viewing only; CSV export is intentionally disabled. Browser-delivered demo data is not confidential and can be inspected in source code.
+Static HTML/CSS/JavaScript site. All dashboards use synthetic data for interactive viewing only; CSV export is intentionally disabled. Charts support hover/tap values, month and segment drill-down and legend emphasis. Browser-delivered demo data is not confidential and can be inspected in source code.
 
 ## Local development
 Run `npm install`, `npx playwright install chromium`, then `npm test`. CI validates JavaScript, chart arithmetic, SEO, links, responsive layouts, calculator and mocked form submission. Browser reports and screenshots are uploaded as artifacts. No real email is sent by CI.
