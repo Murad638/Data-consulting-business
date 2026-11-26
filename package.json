@@ -1,0 +1,13 @@
+{
+  "name": "dataprofit-site",
+  "private": true,
+  "version": "6.1.0",
+  "scripts": {
+    "test:unit": "node --test tests/unit.test.cjs",
+    "test:browser": "playwright test",
+    "test": "npm run test:unit && npm run test:browser"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}
