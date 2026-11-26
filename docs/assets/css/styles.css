@@ -134,3 +134,11 @@ html,body{background-color:#fafbfe;color:#202338;min-height:100%}body{color-sche
 #calculator .calculator-note{max-width:1220px;margin:12px auto 0;font-size:13px;line-height:1.5;color:var(--muted)}
 @media(max-width:900px){#calculator .simulator{grid-template-columns:minmax(0,1fr);padding:20px;gap:20px}#calculator .sliders{gap:18px}}
 @media(max-width:680px){#calculator .simulator{padding:14px;gap:18px}#calculator .scenario-head h3{font-size:21px}#calculator .scenario-reset{min-height:44px;padding:8px 12px}#calculator .sliderlabel{font-size:14px}#calculator .result{padding:14px;gap:10px}#calculator .calc-grid>div{padding:9px;min-width:0}#calculator .calc-grid b{font-size:17px}#calculator .costlegend{font-size:13px}#calculator .calculator-note{font-size:12px}}
+
+/* Calculator input definitions: keep help separate from the range label. */
+#calculator .slider-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px;font-size:15px;line-height:1.4}
+#calculator .slider-caption{display:grid;grid-template-columns:minmax(0,max-content) auto;justify-content:start;align-items:center;gap:4px 6px;min-width:0}
+#calculator .slider-caption label{font-weight:650;min-width:0;overflow-wrap:break-word}
+#calculator .slider-value{color:#075b52;font-weight:750;white-space:nowrap;padding-top:2px}
+#calculator .slider-caption .metric-explanation{grid-column:1/-1;font-size:13px;font-weight:400;color:var(--muted);line-height:1.5;margin:3px 0 0}
+@media(max-width:680px){#calculator .slider-heading{font-size:14px;gap:8px}}
