@@ -80,3 +80,35 @@ html,body{background-color:#fafbfe;color:#202338;min-height:100%}body{color-sche
 @media(max-width:900px){.wrap,.section.analytics-wide>.wrap{width:calc(100% - 40px)}.hero-grid{gap:28px}.headrow{margin-bottom:24px}.servicegrid{gap:16px}}
 @media(max-width:680px){.wrap,.section.analytics-wide>.wrap{width:calc(100% - 32px)}.section{padding:44px 0}.headrow h2{font-size:clamp(28px,7.5vw,36px)}.headrow>p{font-size:16px}.hero h1{font-size:clamp(36px,10vw,49px)}.hero .lead{font-size:16px}.hero .actions{gap:10px}.hero .actions .button{width:100%}.servicecard{padding:20px;gap:10px}.servicecard h3{font-size:21px}.servicegrid{gap:12px}.integration-diagram{padding:10px;gap:10px;border-radius:14px}.integration-sources{gap:6px}.integration-source{padding:10px 4px}.integration-source strong,.integration-output strong{font-size:13px}.integration-source small{font-size:11px}.integration-source svg{width:24px;height:24px}.integration-hosts{grid-template-columns:1fr;gap:6px}.integration-hosts span{font-size:14px}.integration-stage p{font-size:13px}.integration-output{padding:8px 3px}.integration-outputs{gap:6px}.integration-output svg{height:27px}.integration-caption{text-align:left;font-size:14px}.integration-next{margin-top:20px}.integration-next .button{width:100%}.partner{padding:24px;gap:22px}.faqgrid{gap:18px}.contact-centered .form{padding:18px}.contact-centered .prose .checklist{font-size:14px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.servicecard,.button{transition:none}}
+
+/* Desktop integration diagram: larger labels and more breathing room. */
+@media (min-width:1101px){
+  #integrations .integration-diagram{min-height:500px;padding:32px 24px;gap:12px;grid-template-columns:minmax(0,1.3fr) 28px minmax(0,1fr) 28px minmax(0,1.2fr) 28px minmax(0,1fr)}
+  #integrations .integration-stage{gap:14px}
+  #integrations .integration-stage h3{font-size:19px;line-height:1.35}
+  #integrations .integration-stage p{font-size:15px;line-height:1.5}
+  #integrations .integration-sources,#integrations .integration-outputs{gap:12px}
+  #integrations .integration-source{min-height:112px;padding:14px 6px;gap:7px;align-content:center}
+  #integrations .integration-source svg{width:32px;height:32px}
+  #integrations .integration-source strong,#integrations .integration-output strong{font-size:clamp(15px,1.2vw,17px);line-height:1.3}
+  #integrations .integration-source small{font-size:14px;line-height:1.4}
+  #integrations .integration-arrow svg{width:28px;height:28px}
+  #integrations .integration-core{min-height:212px;padding:26px 10px;gap:16px}
+  #integrations .integration-core .integration-brand{font-size:clamp(21px,2.05vw,30px)}
+  #integrations .integration-brand svg{width:30px;height:30px}
+  #integrations .integration-core p{font-size:16px;line-height:1.6}
+  #integrations .integration-storage{padding:24px 12px;gap:14px}
+  #integrations .integration-storage>svg{width:38px;height:38px}
+  #integrations .integration-storage h3{font-size:20px;line-height:1.3}
+  #integrations .integration-storage p{font-size:14px;line-height:1.5}
+  #integrations .integration-hosts{gap:8px}
+  #integrations .integration-hosts span{font-size:15px;padding:9px 5px;line-height:1.4}
+  #integrations .integration-output{min-height:92px;padding:12px 8px;gap:8px;align-content:center}
+  #integrations .integration-output svg{max-width:136px;height:40px}
+}
+
+/* Align the Services dropdown chevron with its navigation label. */
+.nav .drop summary{display:flex;align-items:center;gap:7px}
+.nav .drop summary .nav-chevron{display:block;flex:0 0 14px;width:14px;height:14px;color:currentColor;transition:transform .15s ease}
+.nav .drop[open] summary .nav-chevron{transform:rotate(180deg)}
+@media(prefers-reduced-motion:reduce){.nav .drop summary .nav-chevron{transition:none}}
