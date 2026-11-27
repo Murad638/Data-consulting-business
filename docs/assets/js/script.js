@@ -52,13 +52,16 @@ function initMarketingMotion(){
   partnership:'Keep reports reliable and investigate new business questions as they arise.'
  };
  document.querySelectorAll('a.servicecard').forEach(card=>{
-  const key=new URL(card.href,location.href).pathname.split('/').pop().replace('.html','');
+  const url=new URL(card.href,location.href);
+  const key=url.pathname.split('/').pop().replace('.html','');
+  const solutionExamples={sales:'Compare sales channels and conversion rates before reallocating your budget.',profit:'Identify products with negative contribution margins after fulfilment and advertising.',efficiency:'Find which refresh jobs repeatedly fail or take too long.',plan:'Compare actual spending with the budget and investigate the largest variances.',customers:'Identify customer segments with declining repeat purchases.',billing:'Find unpaid invoices or mismatches between invoices and payments.'};
+  const exampleText=examples[key]||(!card.classList.contains('samplecard')&&key==='work'?solutionExamples[url.searchParams.get('demo')]:null);
   const desc=card.querySelector('p');
-  if(!examples[key]||!desc||card.classList.contains('motion-example-card'))return;
+  if(!exampleText||!desc||card.classList.contains('motion-example-card'))return;
   const example=document.createElement('p');
   example.className='motion-example';
   const label=document.createElement('span');label.textContent='Example';label.className='motion-example-label';
-  example.append(label,document.createTextNode(examples[key]));
+  example.append(label,document.createTextNode(exampleText));
   const copy=document.createElement('div');copy.className='motion-card-copy';
   desc.before(copy);desc.classList.add('motion-card-description');copy.append(desc,example);
   card.classList.add('motion-example-card');
@@ -111,7 +114,7 @@ function initMarketingMotion(){
  function syncPause(){pause.textContent=paused?'Play':'Pause';pause.setAttribute('aria-label',paused?'Resume automatic dashboard rotation':'Pause automatic dashboard rotation');}
  function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&!hover&&visible&&!document.hidden&&!root.contains(document.activeElement)){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},5000);}}
  pause.addEventListener('click',()=>{paused=!paused;syncPause();if(!paused&&motion.matches){paused=true;syncPause();announcement.textContent='Automatic rotation is disabled by your reduced-motion preference.';return;}schedule();});
- root.addEventListener('pointerenter',()=>{hover=true;schedule();});root.addEventListener('pointerleave',()=>{hover=false;schedule();});
+ root.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'){hover=true;schedule();}});root.addEventListener('pointerleave',()=>{hover=false;schedule();});
  root.addEventListener('focusin',schedule);root.addEventListener('focusout',()=>setTimeout(schedule,0));
  document.addEventListener('visibilitychange',schedule);
  if(typeof motion.addEventListener==='function')motion.addEventListener('change',()=>{if(motion.matches){paused=true;syncPause();}schedule();});
