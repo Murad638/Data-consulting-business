@@ -66,33 +66,89 @@ function initMarketingMotion(){
   desc.before(copy);desc.classList.add('motion-card-description');copy.append(desc,example);
   card.classList.add('motion-example-card');
  });
- const visibleTargets=document.querySelectorAll('main .servicecard, main .step, main .feature, main .sidebox, main .profilecard, main .credentialcard, main .integration-diagram');
- if('IntersectionObserver' in window){
-  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{
-   if(e.isIntersecting){e.target.classList.add('motion-enter');observer.unobserve(e.target);}
-  }),{threshold:.08});
-  visibleTargets.forEach(el=>observer.observe(el));
- }
+ const visibleTargets=document.querySelectorAll('main .servicecard, main .step, main .feature, main .sidebox, main .profilecard, main .credentialcard, main .partnerlist > div');
+ const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('motion-enter');observer.unobserve(e.target);}
+ }),{threshold:.05}):null;
+ visibleTargets.forEach(el=>{if(observer)observer.observe(el);else el.classList.add('motion-enter');});
  document.querySelectorAll('.integration-diagram').forEach(diagram=>{
   diagram.querySelectorAll('.integration-arrow').forEach((arrow,i)=>{
-   arrow.style.setProperty('--flow-delay',i*.38+'s');
+   arrow.style.setProperty('--flow-delay',i*.8+'s');
    const svg=arrow.querySelector('svg');if(!svg)return;
+   svg.querySelector('path')?.classList.add('motion-flow-track');
    const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
-   dot.setAttribute('cx','5');dot.setAttribute('cy','16');dot.setAttribute('r','2.5');dot.setAttribute('class','motion-flow-dot');svg.append(dot);
+   dot.setAttribute('cx','5');dot.setAttribute('cy','16');dot.setAttribute('r','3.5');dot.setAttribute('class','motion-flow-dot');svg.append(dot);
   });
   const stages=diagram.querySelectorAll(':scope > .integration-stage,:scope > .integration-core,:scope > .integration-storage');
-  stages.forEach((stage,i)=>{stage.classList.add('motion-flow-stage');stage.style.setProperty('--stage-delay',i*.38+'s');});
+  stages.forEach((stage,i)=>{stage.classList.add('motion-flow-stage');stage.style.setProperty('--stage-delay',i*.8+'s');});
+  let inView=!('IntersectionObserver' in window),paused=motion.matches;
+  const control=document.createElement('button');control.type='button';control.className='integration-motion-control';
+  const controls=document.createElement('div');controls.className='integration-motion-controls';controls.append(control);diagram.after(controls);
+  function sync(){diagram.classList.toggle('motion-flow-running',inView&&!paused&&!motion.matches&&!document.hidden);control.textContent=paused?'Play data flow':'Pause data flow';control.disabled=motion.matches;control.setAttribute('aria-label',control.textContent);}
+  control.addEventListener('click',()=>{paused=!paused;sync();});
+  if('IntersectionObserver' in window){const flowObserver=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;sync();},{threshold:0});flowObserver.observe(diagram);}
+  document.addEventListener('visibilitychange',sync);
+  motion.addEventListener?.('change',()=>{paused=motion.matches;sync();});sync();
  });
  const root=document.querySelector('.hero-dashboard');
  if(!root)return;
  const heading=root.querySelector('.paneltop strong'),kpis=root.querySelector('.hero-kpis'),chart=root.querySelector('.hero-chart'),link=root.querySelector('a.link');
  if(!heading||!kpis||!chart||!link)return;
  const original={heading:heading.textContent,kpis:kpis.innerHTML,chart:chart.innerHTML,chartLabel:chart.getAttribute('aria-label'),href:link.getAttribute('href')};
- const slides=[
-  {name:'Sales',title:original.heading,kpis:original.kpis,chart:original.chart,chartLabel:original.chartLabel,href:original.href},
-  {name:'Customers',title:'Customer analytics',metrics:[['Customers','2,480'],['Repeat rate','38%'],['New customers','620']],chartLabel:'Illustrative customer mix: 38 percent repeat customers, 62 percent other customers.',href:original.href+'?demo=customers',svg:'<svg viewBox="0 0 360 155" role="presentation" aria-hidden="true"><circle cx="100" cy="77" r="52" fill="none" stroke="#dce7f7" stroke-width="22"/><circle cx="100" cy="77" r="52" fill="none" stroke="#087f78" stroke-width="22" stroke-dasharray="124.16 326.73" transform="rotate(-90 100 77)"/><g fill="#10243a" text-anchor="middle"><text x="100" y="77" font-size="24" font-weight="700">38%</text><text x="100" y="94" font-size="11">Repeat rate</text></g><rect x="190" y="43" width="12" height="12" rx="2" fill="#087f78"/><text x="210" y="53" font-size="12" fill="#10243a">Repeat customers</text><text x="210" y="70" font-size="12" fill="#526175">38%</text><rect x="190" y="91" width="12" height="12" rx="2" fill="#dce7f7"/><text x="210" y="101" font-size="12" fill="#10243a">Other customers</text><text x="210" y="118" font-size="12" fill="#526175">62%</text></svg>'},
-  {name:'Operations',title:'Pipeline reliability',metrics:[['Success rate','98.4%'],['Avg. runtime','4.2 min'],['Failed runs','8']],chartLabel:'Illustrative daily pipeline success rate, ranging between 95 and 100 percent.',href:original.href+'?demo=reliability',svg:'<svg viewBox="0 0 360 155" role="presentation" aria-hidden="true"><g stroke="#dce4eb" fill="none"><path d="M36 18H350 M36 53H350 M36 88H350 M36 123H350"/></g><g font-size="10" fill="#526175"><text x="1" y="22">100%</text><text x="5" y="57">95%</text><text x="5" y="92">90%</text><text x="5" y="127">85%</text></g><path d="M36 25 L71 18 106 32 141 25 176 53 211 32 246 25 281 18 316 32 350 25 L350 123 H36Z" fill="#e0f0e8"/><path d="M36 25 L71 18 106 32 141 25 176 53 211 32 246 25 281 18 316 32 350 25" fill="none" stroke="#087f78" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/><text x="192" y="146" text-anchor="middle" font-size="10" fill="#526175">Illustrative daily success rate</text></svg>'}
+ // All additional previews use the same deterministic synthetic models as Analytics Lab.
+ const slides=[{name:'Sales',title:original.heading,kpis:original.kpis,chart:original.chart,chartLabel:original.chartLabel,href:original.href}];
+ const specs=[
+  ['customers','Customers','Customer analytics',['active','repeatshare','new'],'donut'],
+  ['reliability','Operations','Pipeline reliability',['runs','successrate','failed'],'line'],
+  ['profit','Profit','Product profitability',['revenue','profit','margin'],'profit'],
+  ['product','Products','Product performance',['units','returns','returnrate'],'stack'],
+  ['funnel','Funnel','Sales funnel',['leads','won','conversion'],'funnel'],
+  ['efficiency','Efficiency','Pipeline efficiency',['before','after','saved'],'compare'],
+  ['plan','Planning','Actual vs plan',['target','actual','attain'],'compare'],
+  ['billing','Billing','Billing reconciliation',['invoices','exceptions','matchrate'],'donut']
  ];
+ const shortNames={active:'Active customer-months',repeatshare:'Repeat share',new:'First-time customer-months',runs:'Scheduled runs',successrate:'Success rate',failed:'Failed runs',profit:'Contribution profit',margin:'Contribution margin',returnrate:'Return rate',conversion:'Lead-to-win rate',before:'Before',after:'After',saved:'Time saved',attain:'Attainment',matchrate:'Match rate'};
+ const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function svgWrap(content){return '<svg viewBox="0 0 360 155" role="presentation" aria-hidden="true">'+content+'</svg>';}
+ function txt(x,y,value,opts=''){return '<text x="'+x+'" y="'+y+'" font-size="10" fill="#526175" '+opts+'>'+esc(value)+'</text>';}
+ function rect(x,y,w,h,color){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+Math.max(0,h)+'" rx="2" fill="'+color+'"/>';}
+ function previewChart(key,type,d,a,rows){
+  const month=labMonths.map(m=>labAggregate(d,rows.filter(r=>r.month===m)));
+  const teal='#087f78',blue='#6f94c3',amber='#c88b36',red='#b34b52',grid='<path d="M26 24H350 M26 54H350 M26 84H350 M26 114H350" stroke="#e3eaf0" fill="none"/>';
+  if(type==='donut'){
+   const parts=key==='customers'?[[a.repeat,'Repeat customer-months',teal],[a.new,'First-time customer-months',blue]]:[[a.matched,'Matched invoices',teal],[a.exceptions,'Exceptions',amber]];
+   const total=parts.reduce((sum,p)=>sum+p[0],0)||1,share=parts[0][0]/total*100,c=2*Math.PI*47;
+   let out='<circle cx="88" cy="76" r="47" stroke="'+parts[1][2]+'" stroke-width="21" fill="none"/><circle cx="88" cy="76" r="47" stroke="'+teal+'" stroke-width="21" fill="none" stroke-dasharray="'+(c*share/100)+' '+c+'" transform="rotate(-90 88 76)"/>';
+   out+='<text x="88" y="79" text-anchor="middle" font-size="23" font-weight="700" fill="#10243a">'+share.toFixed(1)+'%</text>'+txt(88,94,key==='customers'?'Repeat share':'Match rate','text-anchor="middle"');
+   parts.forEach((p,i)=>{const yy=52+i*46;out+=rect(160,yy-8,11,11,p[2])+txt(177,yy,p[1])+txt(177,yy+15,p[0].toLocaleString('en-GB')+' · '+(p[0]/total*100).toFixed(1)+'%');});return svgWrap(out);
+  }
+  if(type==='funnel'){
+   let out='';['leads','qualified','proposals','won'].forEach((k,i)=>{let yy=14+i*34;out+=txt(6,yy+14,labLabels[k])+rect(94,yy,196*a[k]/Math.max(1,a.leads),22,[teal,blue,amber,'#6c8d78'][i])+txt(350,yy+14,a[k].toLocaleString('en-GB'),'text-anchor="end"');});return svgWrap(out);
+  }
+  if(type==='profit'){
+   const groups=d.segments.map(name=>[name,labAggregate(d,rows.filter(r=>r.segment===name)).profit]);const max=Math.max(1,...groups.map(g=>Math.abs(g[1])));let out='<path d="M190 10V145" stroke="#95a7b8" stroke-dasharray="3 3"/>';
+   groups.forEach((g,i)=>{let yy=15+i*34,w=Math.abs(g[1])/max*100;out+=txt(3,yy+13,g[0])+rect(g[1]<0?190-w:190,yy,w,18,g[1]<0?red:teal)+txt(355,yy+13,fmt(g[1]),'text-anchor="end"');});return svgWrap(out);
+  }
+  if(type==='line'){
+   const vals=month.map(m=>m.successrate),lo=Math.max(0,Math.floor((Math.min(...vals)-1)/2)*2),hi=100;
+   const yy=v=>114-(v-lo)/Math.max(1,hi-lo)*90;
+   const pts=vals.map((v,i)=>(30+i*62)+','+yy(v)).join(' ');
+   let out=grid+txt(0,27,'100%')+txt(0,117,lo+'%')+'<polyline points="'+pts+'" fill="none" stroke="'+teal+'" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>';
+   vals.forEach((v,i)=>{out+='<circle cx="'+(30+i*62)+'" cy="'+yy(v)+'" r="3.2" fill="'+teal+'"/>'+txt(30+i*62,134,labMonths[i],'text-anchor="middle"');});return svgWrap(out);
+  }
+  const keys=key==='efficiency'?['before','after']:key==='plan'?['target','actual']:['net','returns'];
+  const max=Math.max(1,...month.map(m=>type==='stack'?m.units:Math.max(...keys.map(k=>m[k]))));let out=grid;
+  month.forEach((m,i)=>{const x=35+i*52;let y=114;keys.forEach((k,j)=>{const h=m[k]/max*88;if(type==='stack'){y-=h;out+=rect(x,y,28,h,j?amber:teal);}else out+=rect(x+j*15,114-h,13,h,j?teal:blue);});out+=txt(x+14,130,labMonths[i],'text-anchor="middle"');});
+  keys.forEach((k,i)=>{const xx=55+i*145;out+=rect(xx,140,9,9,type==='stack'?(i?amber:teal):(i?teal:blue))+txt(xx+13,148,labLabels[k]);});return svgWrap(out);
+ }
+ if(typeof labConfig!=='undefined'&&typeof labData==='function'&&typeof labAggregate==='function'){
+  specs.forEach(([key,name,title,metricKeys,type])=>{
+   const d=labConfig[key];if(!d)return;
+   const rows=labData(d),a=labAggregate(d,rows);
+   const metrics=metricKeys.map(k=>{const m=d.metrics.find(m=>m.key===k);return [shortNames[k]||m.name,m.fmt(a[k])];});
+   slides.push({name,title,metrics,chartLabel:'Illustrative '+d.name+' chart, January to June 2026. '+metrics.map(m=>m.join(': ')).join('; '),href:original.href+'?demo='+key,svg:previewChart(key,type,d,a,rows)});
+  });
+ }
  const controls=document.createElement('div');controls.className='hero-dashboard-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Dashboard previews');
  let current=0,paused=motion.matches,visible=true,hover=false,timer=0;
  const buttons=slides.map((slide,i)=>{const button=document.createElement('button');button.type='button';button.textContent=slide.name;button.addEventListener('click',()=>{paused=true;render(i);syncPause();schedule();});controls.append(button);return button;});
@@ -105,14 +161,15 @@ function initMarketingMotion(){
   chart.classList.toggle('hero-chart-alternate',!!slide.svg);
   chart.innerHTML=slide.svg||slide.chart;chart.setAttribute('aria-label',slide.chartLabel);
   link.setAttribute('href',slide.href);
+  link.textContent=i===0?'Explore interactive dashboards ↗':'Explore this dashboard ↗';
   buttons.forEach((button,j)=>button.setAttribute('aria-pressed',String(i===j)));
   if(!motion.matches&&typeof kpis.animate==='function'){
    const frames=[{opacity:.25,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}];
-   [kpis,chart].forEach(el=>{el.getAnimations().forEach(a=>a.cancel());el.animate(frames,{duration:350,easing:'ease-out'});});
+   [kpis,chart].forEach(el=>{el.getAnimations().forEach(a=>a.cancel());el.animate(frames,{duration:240,easing:'ease-out'});});
   }
  }
  function syncPause(){pause.textContent=paused?'Play':'Pause';pause.setAttribute('aria-label',paused?'Resume automatic dashboard rotation':'Pause automatic dashboard rotation');}
- function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&!hover&&visible&&!document.hidden&&!root.contains(document.activeElement)){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},5000);}}
+ function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&!hover&&visible&&!document.hidden&&!root.contains(document.activeElement)){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},3000);}}
  pause.addEventListener('click',()=>{paused=!paused;syncPause();if(!paused&&motion.matches){paused=true;syncPause();announcement.textContent='Automatic rotation is disabled by your reduced-motion preference.';return;}schedule();});
  root.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'){hover=true;schedule();}});root.addEventListener('pointerleave',()=>{hover=false;schedule();});
  root.addEventListener('focusin',schedule);root.addEventListener('focusout',()=>setTimeout(schedule,0));
