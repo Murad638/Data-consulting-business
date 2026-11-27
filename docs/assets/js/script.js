@@ -151,7 +151,7 @@ function initMarketingMotion(){
  }
  const controls=document.createElement('div');controls.className='hero-dashboard-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Dashboard previews');
  let current=0,paused=motion.matches,visible=true,hover=false,timer=0;
- const buttons=slides.map((slide,i)=>{const button=document.createElement('button');button.type='button';button.textContent=slide.name;button.addEventListener('click',()=>{paused=true;render(i);syncPause();schedule();});controls.append(button);return button;});
+ 
  const pause=document.createElement('button');pause.type='button';pause.className='hero-dashboard-pause';controls.append(pause);root.append(controls);
  const announcement=document.createElement('span');announcement.className='motion-sr-only';announcement.setAttribute('aria-live','polite');controls.append(announcement);
  function render(i){
@@ -162,14 +162,14 @@ function initMarketingMotion(){
   chart.innerHTML=slide.svg||slide.chart;chart.setAttribute('aria-label',slide.chartLabel);
   link.setAttribute('href',slide.href);
   link.textContent=i===0?'Explore interactive dashboards ↗':'Explore this dashboard ↗';
-  buttons.forEach((button,j)=>button.setAttribute('aria-pressed',String(i===j)));
+  
   if(!motion.matches&&typeof kpis.animate==='function'){
    const frames=[{opacity:.25,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}];
    [kpis,chart].forEach(el=>{el.getAnimations().forEach(a=>a.cancel());el.animate(frames,{duration:240,easing:'ease-out'});});
   }
  }
- function syncPause(){pause.textContent=paused?'Play':'Pause';pause.setAttribute('aria-label',paused?'Resume automatic dashboard rotation':'Pause automatic dashboard rotation');}
- function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&!hover&&visible&&!document.hidden&&!root.contains(document.activeElement)){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},3000);}}
+ function syncPause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume automatic dashboard rotation':'Pause automatic dashboard rotation');}
+ function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&visible&&!document.hidden){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},3000);}}
  pause.addEventListener('click',()=>{paused=!paused;syncPause();if(!paused&&motion.matches){paused=true;syncPause();announcement.textContent='Automatic rotation is disabled by your reduced-motion preference.';return;}schedule();});
  root.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'){hover=true;schedule();}});root.addEventListener('pointerleave',()=>{hover=false;schedule();});
  root.addEventListener('focusin',schedule);root.addEventListener('focusout',()=>setTimeout(schedule,0));
