@@ -117,7 +117,7 @@ function initLabs(){document.querySelectorAll('[data-lab]').forEach(root=>{
  root.addEventListener('focusin',e=>{const el=target(e);if(el&&!pinnedTip&&(!el.classList.contains('metric-help')||el.matches(':focus-visible'))){const r=el.getBoundingClientRect();showTip(el,r.left+r.width/2,r.top+r.height/2)}});
  root.addEventListener('focusout',e=>{if(target(e)===activeTip)hideTip()});
  document.addEventListener('pointerdown',e=>{if(activeTip&&!activeTip.contains(e.target))hideTip()},{capture:true});
- document.addEventListener('scroll',()=>{if(!activeTip)return;if(!pinnedTip&&!activeTip.classList.contains('metric-help')&&document.activeElement===activeTip){const r=activeTip.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth){showTip(activeTip,r.left+r.width/2,r.top+r.height/2);return}}hideTip()},{capture:true,passive:true});
+ document.addEventListener('scroll',()=>{if(!activeTip)return;if(!pinnedTip&&document.activeElement===activeTip&&(!activeTip.classList.contains('metric-help')||activeTip.matches(':focus-visible'))){const r=activeTip.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth){showTip(activeTip,r.left+r.width/2,r.top+r.height/2);return}}hideTip()},{capture:true,passive:true});
  window.addEventListener('resize',hideTip);
  window.visualViewport?.addEventListener('resize',hideTip);
  document.addEventListener('keydown',e=>{if(e.key==='Escape')hideTip()});
