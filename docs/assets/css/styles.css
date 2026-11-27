@@ -311,10 +311,9 @@ main:has(.pagehero) .partnerlist>div:nth-child(4n+4) svg{color:#416b9f}
 .dp-preview-visible .minihbars i{transform-origin:left;animation:dp-grow-horizontal .65s ease-out both}
 @keyframes dp-grow-horizontal{from{transform:scaleX(.1)}to{transform:scaleX(1)}}
 .dp-related-demo{display:block;margin-top:15px}.dp-sample-intent{background:#dce7f7;border:1px solid #cbd9ed;padding:14px;border-radius:8px;color:#142d40;font-size:14px}
-.dp-mobile-contact{display:none}
 @media(hover:hover){.dp-benefit:hover,.dp-demo-tile:hover{transform:translateY(-3px);box-shadow:0 8px 22px #142d4018}}
-@media(max-width:680px){.dp-transform,.dp-benefits,.dp-demo-preview{grid-template-columns:minmax(0,1fr)}.dp-transform-arrow svg{transform:rotate(90deg)}.dp-transform-foot{flex-wrap:wrap}.dp-transform-panel{padding:18px}.dp-mobile-contact{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));left:16px;right:16px;z-index:20;text-align:center;padding:12px;background:#08766b;color:#fff;border-radius:8px;box-shadow:0 4px 20px #142d4030;font-weight:650;visibility:hidden;opacity:0;transition:opacity .2s;display:block}.dp-mobile-contact-visible{visibility:visible;opacity:1}body:has(.dp-mobile-contact){padding-bottom:76px}}
-@media(prefers-reduced-motion:reduce){.dp-transform-play *,.dp-preview-visible *{animation:none!important}.dp-benefit,.dp-demo-tile,.dp-mobile-contact{transition:none!important;transform:none!important}}
+@media(max-width:680px){.dp-transform,.dp-benefits,.dp-demo-preview{grid-template-columns:minmax(0,1fr)}.dp-transform-arrow svg{transform:rotate(90deg)}.dp-transform-foot{flex-wrap:wrap}.dp-transform-panel{padding:18px}}
+@media(prefers-reduced-motion:reduce){.dp-transform-play *,.dp-preview-visible *{animation:none!important}.dp-benefit,.dp-demo-tile{transition:none!important;transform:none!important}}
 
 
 /* Continuous before-to-after transformation, shared wherever the component appears. */
@@ -355,3 +354,11 @@ main:has(.pagehero) .partnerlist>div:nth-child(4n+4) svg{color:#416b9f}
 @keyframes dp-ring-in{from{transform:rotate(-100deg) scale(.8);opacity:.4}to{transform:none;opacity:1}}
 @media(pointer:coarse){.dp-transform-pause{min-width:44px;min-height:44px}}
 @media(prefers-reduced-motion:reduce){.dp-transform-play *,.dp-preview-visible *{animation:none!important}}
+
+/* Touch users see both descriptions and examples, with scroll-triggered motion. */
+@media(hover:none),(pointer:coarse){
+ .motion-example-card .motion-card-copy>p{opacity:1;transform:none}
+ .motion-example-card.motion-enter .ico svg{animation:dp-touch-icon .55s ease-out}
+ @keyframes dp-touch-icon{0%,100%{transform:none}50%{transform:translateY(-3px) rotate(-6deg)}}
+}
+@media(prefers-reduced-motion:reduce){.motion-example-card.motion-enter .ico svg{animation:none!important}}
