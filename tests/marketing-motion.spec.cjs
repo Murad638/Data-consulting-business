@@ -32,15 +32,13 @@ test('shared service examples and integration motion markup',async({page})=>{
  await page.goto('pages/solutions.html');
  await expect(page.locator('.motion-example-card')).toHaveCount(6);
 });
-test('integration flow stays active while visible and supports pause',async({page})=>{
+test('integration flow stays active while visible without pause button',async({page})=>{
  await page.goto('./');
  const diagram=page.locator('.integration-diagram');
  await diagram.scrollIntoViewIfNeeded();
  await expect(diagram).toHaveClass(/motion-flow-running/);
  await expect(diagram.locator('.motion-flow-dot').first()).toHaveCSS('animation-iteration-count','infinite');
- await page.getByRole('button',{name:'Pause data flow'}).click();
- await expect(diagram).not.toHaveClass(/motion-flow-running/);
- await page.getByRole('button',{name:'Play data flow'}).click();
+ await expect(page.locator('.integration-motion-controls')).toHaveCount(0);
  await expect(diagram).toHaveClass(/motion-flow-running/);
 });
 test('sample offer, transformation, and relevant service demo links',async({page})=>{
