@@ -4,7 +4,7 @@ test('hero cycles through nine dashboards without name buttons',async({page})=>{
  await page.goto('./');
  const hero=page.locator('.hero-dashboard');
  await expect(hero.locator('.paneltop strong')).toHaveText('Business performance');
- await expect(hero.locator('.hero-dashboard-controls button')).toHaveCount(1);
+ await expect(hero.locator('.hero-dashboard-controls button')).toHaveCount(0);
  for(const key of ['customers','reliability','profit','product','funnel','efficiency','plan','billing']){
   await page.clock.runFor(2000);
   await expect(hero.locator('a.link')).toHaveAttribute('href',new RegExp('demo='+key+'$'));
@@ -12,15 +12,14 @@ test('hero cycles through nine dashboards without name buttons',async({page})=>{
  }
  await page.clock.runFor(2000);
  await expect(hero.locator('.hero-chart > div')).toHaveCount(12);
- await hero.getByRole('button',{name:'Pause automatic dashboard rotation'}).click();
- await page.clock.runFor(4000);
- await expect(hero.locator('.paneltop strong')).toHaveText('Business performance');
+ await page.clock.runFor(2000);
+ await expect(hero.locator('.paneltop strong')).toHaveText('Customer analytics');
 });
 test('reduced motion keeps hero static',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto('./');
  await expect(page.locator('.hero-dashboard .paneltop strong')).toHaveText('Business performance');
- await expect(page.getByRole('button',{name:'Resume automatic dashboard rotation'})).toBeVisible();
+ await expect(page.locator('.hero-dashboard-controls button')).toHaveCount(0);
 });
 test('shared service examples and integration motion markup',async({page})=>{
  await page.goto('./');
@@ -48,7 +47,7 @@ test('sample offer, transformation, and relevant service demo links',async({page
  await transform.scrollIntoViewIfNeeded();
  await expect(transform).toHaveClass(/dp-transform-play/);
  await expect(transform.locator('.dp-transform-dot')).toHaveCSS('animation-iteration-count','infinite');
- await expect(transform.getByRole('button',{name:/Replay transformation/i})).toHaveCount(0);
+ await expect(transform.locator('button')).toHaveCount(0);
  await expect(page.locator('.cta a.button')).toHaveAttribute('href',/sample=1/);
  await page.goto('pages/services/engineering.html');
  await expect(page.locator('.sidebox .dp-related-demo')).toHaveAttribute('href',/demo=reliability/);
