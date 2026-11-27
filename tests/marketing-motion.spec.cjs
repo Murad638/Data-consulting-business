@@ -1,24 +1,26 @@
 const {test,expect}=require('@playwright/test');
-test('hero preview switches nine dashboards and preserves links',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});
+test('hero cycles through nine dashboards without name buttons',async({page})=>{
+ await page.clock.install();
  await page.goto('./');
  const hero=page.locator('.hero-dashboard');
  await expect(hero.locator('.paneltop strong')).toHaveText('Business performance');
- await expect(hero.locator('.hero-dashboard-controls button')).toHaveCount(10);
- for(const [name,key] of [['Customers','customers'],['Operations','reliability'],['Profit','profit'],['Products','product'],['Funnel','funnel'],['Efficiency','efficiency'],['Planning','plan'],['Billing','billing']]){
-  await hero.getByRole('button',{name,exact:true}).click();
+ await expect(hero.locator('.hero-dashboard-controls button')).toHaveCount(1);
+ for(const key of ['customers','reliability','profit','product','funnel','efficiency','plan','billing']){
+  await page.clock.runFor(3100);
   await expect(hero.locator('a.link')).toHaveAttribute('href',new RegExp('demo='+key+'$'));
   await expect(hero.locator('.hero-chart svg')).toBeVisible();
  }
- await hero.getByRole('button',{name:'Sales',exact:true}).click();
+ await page.clock.runFor(3100);
  await expect(hero.locator('.hero-chart > div')).toHaveCount(12);
-});
-test('automatic hero rotation and pause',async({page})=>{
- await page.goto('./');
- const hero=page.locator('.hero-dashboard');
- await expect(hero.locator('.paneltop strong')).toHaveText('Customer analytics',{timeout:10000});
  await hero.getByRole('button',{name:'Pause automatic dashboard rotation'}).click();
- await expect(hero.getByRole('button',{name:'Resume automatic dashboard rotation'})).toBeVisible();
+ await page.clock.runFor(4000);
+ await expect(hero.locator('.paneltop strong')).toHaveText('Business performance');
+});
+test('reduced motion keeps hero static',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.goto('./');
+ await expect(page.locator('.hero-dashboard .paneltop strong')).toHaveText('Business performance');
+ await expect(page.getByRole('button',{name:'Resume automatic dashboard rotation'})).toBeVisible();
 });
 test('shared service examples and integration motion markup',async({page})=>{
  await page.goto('./');
