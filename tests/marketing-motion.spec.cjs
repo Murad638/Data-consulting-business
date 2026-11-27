@@ -57,3 +57,30 @@ test('sample offer, transformation, and relevant service demo links',async({page
  await expect(page.locator('.dp-sample-intent')).toBeVisible();
  await expect(page.locator('textarea[name="question"]')).toHaveAttribute('placeholder',/sample dashboard/i);
 });
+
+test('touch previews replay on return to view and sample CTA is not floating',async({page},info)=>{
+ test.skip(!info.project.use.hasTouch,'Touch layouts only');
+ await page.goto('./');
+ const previews=page.locator('.samplecard .samplemini');
+ await expect(previews).toHaveCount(3);
+ for(const preview of await previews.all()){
+  await preview.scrollIntoViewIfNeeded();
+  await expect(preview).toHaveClass(/dp-preview-visible/);
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await expect(preview).not.toHaveClass(/dp-preview-visible/);
+  await preview.scrollIntoViewIfNeeded();
+  await expect(preview).toHaveClass(/dp-preview-visible/);
+ }
+ await expect(page.locator('.dp-mobile-contact')).toHaveCount(0);
+ await expect(page.locator('.cta a.button')).toHaveAttribute('href',/sample=1/);
+ const card=page.locator('.home-services .motion-example-card').first();
+ await card.scrollIntoViewIfNeeded();
+ await expect(card.locator('.motion-card-description')).toHaveCSS('opacity','1');
+ await expect(card.locator('.motion-example')).toHaveCSS('opacity','1');
+ await page.goto('pages/services/services.html');
+ await expect(page.locator('.dp-mobile-contact')).toHaveCount(0);
+ await page.goto('pages/analytics/work.html');
+ const tile=page.locator('.dp-demo-tile').first();
+ await tile.scrollIntoViewIfNeeded();
+ await expect(tile).toHaveClass(/dp-preview-visible/);
+});
