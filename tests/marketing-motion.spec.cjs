@@ -6,11 +6,11 @@ test('hero cycles through nine dashboards without name buttons',async({page})=>{
  await expect(hero.locator('.paneltop strong')).toHaveText('Business performance');
  await expect(hero.locator('.hero-dashboard-controls button')).toHaveCount(1);
  for(const key of ['customers','reliability','profit','product','funnel','efficiency','plan','billing']){
-  await page.clock.runFor(3100);
+  await page.clock.runFor(2000);
   await expect(hero.locator('a.link')).toHaveAttribute('href',new RegExp('demo='+key+'$'));
   await expect(hero.locator('.hero-chart svg')).toBeVisible();
  }
- await page.clock.runFor(3100);
+ await page.clock.runFor(2000);
  await expect(hero.locator('.hero-chart > div')).toHaveCount(12);
  await hero.getByRole('button',{name:'Pause automatic dashboard rotation'}).click();
  await page.clock.runFor(4000);
@@ -47,8 +47,10 @@ test('sample offer, transformation, and relevant service demo links',async({page
  await page.goto('./');
  const transform=page.locator('.dp-transform');
  await expect(transform).toBeVisible();
- await transform.getByRole('button',{name:'Replay transformation'}).click();
+ await transform.scrollIntoViewIfNeeded();
  await expect(transform).toHaveClass(/dp-transform-play/);
+ await expect(transform.locator('.dp-transform-dot')).toHaveCSS('animation-iteration-count','infinite');
+ await expect(transform.getByRole('button',{name:/Replay transformation/i})).toHaveCount(0);
  await expect(page.locator('.cta a.button')).toHaveAttribute('href',/sample=1/);
  await page.goto('pages/services/engineering.html');
  await expect(page.locator('.sidebox .dp-related-demo')).toHaveAttribute('href',/demo=reliability/);
