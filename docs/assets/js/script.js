@@ -146,11 +146,7 @@ function initMarketingMotion(){
    slides.push({name,title,metrics,chartLabel:'Illustrative '+d.name+' chart, January to June 2026. '+metrics.map(m=>m.join(': ')).join('; '),href:original.href+'?demo='+key,svg:previewChart(key,type,d,a,rows)});
   });
  }
- const controls=document.createElement('div');controls.className='hero-dashboard-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Dashboard previews');
- let current=0,paused=motion.matches,visible=true,timer=0;
- 
- const pause=document.createElement('button');pause.type='button';pause.className='hero-dashboard-pause';controls.append(pause);root.append(controls);
- const announcement=document.createElement('span');announcement.className='motion-sr-only';announcement.setAttribute('aria-live','polite');controls.append(announcement);
+ let current=0,visible=true,timer=0;
  function render(i){
   current=i;const slide=slides[i];
   heading.textContent=slide.title;
@@ -165,13 +161,11 @@ function initMarketingMotion(){
    [kpis,chart].forEach(el=>{el.getAnimations().forEach(a=>a.cancel());el.animate(frames,{duration:240,easing:'ease-out'});});
   }
  }
- function syncPause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume automatic dashboard rotation':'Pause automatic dashboard rotation');}
- function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&visible&&!document.hidden){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},2000);}}
- pause.addEventListener('click',()=>{paused=!paused;syncPause();if(!paused&&motion.matches){paused=true;syncPause();announcement.textContent='Automatic rotation is disabled by your reduced-motion preference.';return;}schedule();});
+ function schedule(){clearTimeout(timer);if(!motion.matches&&visible&&!document.hidden){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},2000);}}
  document.addEventListener('visibilitychange',schedule);
- if(typeof motion.addEventListener==='function')motion.addEventListener('change',()=>{if(motion.matches){paused=true;syncPause();}schedule();});
+ motion.addEventListener?.('change',schedule);
  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.1});observer.observe(root);}
- render(0);syncPause();schedule();
+ render(0);schedule();
 }
 document.addEventListener('DOMContentLoaded',initMarketingMotion);
 
@@ -181,14 +175,11 @@ function initCustomerJourney(){
  const motion=matchMedia('(prefers-reduced-motion: reduce)');
  document.querySelectorAll('.dp-transform').forEach(el=>{
   el.querySelector('.dp-transform-replay')?.remove();
-  const footer=el.querySelector('.dp-transform-foot');if(!footer)return;
-  const pause=document.createElement('button');pause.type='button';pause.className='dp-transform-pause';footer.append(pause);
-  let inView=!('IntersectionObserver' in window),paused=motion.matches;
-  function sync(){el.classList.toggle('dp-transform-play',inView&&!paused&&!motion.matches&&!document.hidden);pause.hidden=motion.matches;pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume transformation animation':'Pause transformation animation');}
-  pause.addEventListener('click',()=>{paused=!paused;sync();});
+  let inView=!('IntersectionObserver' in window);
+  function sync(){el.classList.toggle('dp-transform-play',inView&&!motion.matches&&!document.hidden);}
   if('IntersectionObserver' in window){const obs=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;sync();},{threshold:0});obs.observe(el);}
   document.addEventListener('visibilitychange',sync);
-  motion.addEventListener?.('change',()=>{paused=motion.matches;sync();});sync();
+  motion.addEventListener?.('change',sync);sync();
  });
  // Replay every miniature chart whenever its complete card is hovered or focused.
  const previews=[...document.querySelectorAll('.samplemini,.dp-demo-tile')];
