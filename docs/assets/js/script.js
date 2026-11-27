@@ -150,7 +150,7 @@ function initMarketingMotion(){
   });
  }
  const controls=document.createElement('div');controls.className='hero-dashboard-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Dashboard previews');
- let current=0,paused=motion.matches,visible=true,hover=false,timer=0;
+ let current=0,paused=motion.matches,visible=true,timer=0;
  
  const pause=document.createElement('button');pause.type='button';pause.className='hero-dashboard-pause';controls.append(pause);root.append(controls);
  const announcement=document.createElement('span');announcement.className='motion-sr-only';announcement.setAttribute('aria-live','polite');controls.append(announcement);
@@ -169,10 +169,8 @@ function initMarketingMotion(){
   }
  }
  function syncPause(){pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume automatic dashboard rotation':'Pause automatic dashboard rotation');}
- function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&visible&&!document.hidden){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},3000);}}
+ function schedule(){clearTimeout(timer);if(!paused&&!motion.matches&&visible&&!document.hidden){timer=setTimeout(()=>{render((current+1)%slides.length);schedule();},2000);}}
  pause.addEventListener('click',()=>{paused=!paused;syncPause();if(!paused&&motion.matches){paused=true;syncPause();announcement.textContent='Automatic rotation is disabled by your reduced-motion preference.';return;}schedule();});
- root.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'){hover=true;schedule();}});root.addEventListener('pointerleave',()=>{hover=false;schedule();});
- root.addEventListener('focusin',schedule);root.addEventListener('focusout',()=>setTimeout(schedule,0));
  document.addEventListener('visibilitychange',schedule);
  if(typeof motion.addEventListener==='function')motion.addEventListener('change',()=>{if(motion.matches){paused=true;syncPause();}schedule();});
  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.1});observer.observe(root);}
@@ -185,14 +183,27 @@ document.addEventListener('DOMContentLoaded',initMarketingMotion);
 function initCustomerJourney(){
  const motion=matchMedia('(prefers-reduced-motion: reduce)');
  document.querySelectorAll('.dp-transform').forEach(el=>{
-  const replay=el.querySelector('.dp-transform-replay');if(!replay)return;
-  function play(){el.classList.remove('dp-transform-play');void el.offsetWidth;el.classList.add('dp-transform-play');}
-  replay.hidden=motion.matches;replay.addEventListener('click',play);
-  if(!motion.matches&&'IntersectionObserver' in window){const obs=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){play();obs.disconnect();}},{threshold:.15});obs.observe(el);}
-  motion.addEventListener?.('change',()=>{replay.hidden=motion.matches;if(motion.matches)el.classList.remove('dp-transform-play');});
+  el.querySelector('.dp-transform-replay')?.remove();
+  const footer=el.querySelector('.dp-transform-foot');if(!footer)return;
+  const pause=document.createElement('button');pause.type='button';pause.className='dp-transform-pause';footer.append(pause);
+  let inView=!('IntersectionObserver' in window),paused=motion.matches;
+  function sync(){el.classList.toggle('dp-transform-play',inView&&!paused&&!motion.matches&&!document.hidden);pause.hidden=motion.matches;pause.textContent=paused?'▶':'Ⅱ';pause.setAttribute('aria-label',paused?'Resume transformation animation':'Pause transformation animation');}
+  pause.addEventListener('click',()=>{paused=!paused;sync();});
+  if('IntersectionObserver' in window){const obs=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;sync();},{threshold:0});obs.observe(el);}
+  document.addEventListener('visibilitychange',sync);
+  motion.addEventListener?.('change',()=>{paused=motion.matches;sync();});sync();
  });
- const previews=document.querySelectorAll('.samplemini,.dp-demo-preview');
- if('IntersectionObserver' in window){const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('dp-preview-visible');obs.unobserve(e.target);}}),{threshold:.1});previews.forEach(el=>obs.observe(el));}
+ // Replay every miniature chart whenever its complete card is hovered or focused.
+ const previews=[...document.querySelectorAll('.samplemini,.dp-demo-tile')];
+ function animatePreview(el){if(motion.matches)return;el.classList.remove('dp-preview-visible');void el.offsetWidth;el.classList.add('dp-preview-visible');}
+ const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){animatePreview(e.target);observer.unobserve(e.target);}}),{threshold:.1}):null;
+ previews.forEach(el=>{
+  const card=el.closest('.samplecard,.dp-demo-tile')||el;
+  card.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')animatePreview(el);});
+  card.addEventListener('focusin',()=>animatePreview(el));
+  if(observer)observer.observe(el);else animatePreview(el);
+ });
+ motion.addEventListener?.('change',()=>{if(motion.matches)previews.forEach(el=>el.classList.remove('dp-preview-visible'));});
  const script=document.querySelector('script[src*="assets/js/script.js"]');
  if(!script)return;
  const base=new URL('../../',script.src);
