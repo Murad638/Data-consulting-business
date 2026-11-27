@@ -142,3 +142,77 @@ html,body{background-color:#fafbfe;color:#202338;min-height:100%}body{color-sche
 #calculator .slider-value{color:#075b52;font-weight:750;white-space:nowrap;padding-top:2px}
 #calculator .slider-caption .metric-explanation{grid-column:1/-1;font-size:13px;font-weight:400;color:var(--muted);line-height:1.5;margin:3px 0 0}
 @media(max-width:680px){#calculator .slider-heading{font-size:14px;gap:8px}}
+
+/* UI refresh: retain colorful cards, restore original page surfaces. */
+.hero-kpis>div:nth-child(1){background:#dcefe6;border-color:#c9e3d7}
+.hero-kpis>div:nth-child(2){background:#f9e9cf;border-color:#eed9b7}
+.hero-kpis>div:nth-child(3){background:#dce7f7;border-color:#cbd9ed}
+.hero-chart i{background:linear-gradient(180deg,#64bcae,#168f80)}
+.hero-chart>div:nth-child(3n+2) i{background:linear-gradient(180deg,#94b6e1,#527caf)}
+
+
+/* Shared card palette: internal pages and approved homepage groups. */
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):nth-child(6n+1){--card-bg:#e0f0e8;--card-accent:#176b58;--card-border:#c8e3d7}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):nth-child(6n+2){--card-bg:#f9ead2;--card-accent:#92570f;--card-border:#efd9b5}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):nth-child(6n+3){--card-bg:#e1e8f8;--card-accent:#405ca6;--card-border:#d5ddf5}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):nth-child(6n+4){--card-bg:#f8e5e2;--card-accent:#a34f44;--card-border:#efcfcb}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):nth-child(6n+5){--card-bg:#dce7f7;--card-accent:#416b9f;--card-border:#cbd9ed}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):nth-child(6n+6){--card-bg:#e0f0fa;--card-accent:#246783;--card-border:#cbe3f1}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard)[href$="consulting.html"]{--card-bg:#e0f0e8;--card-accent:#176b58;--card-border:#c8e3d7}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard)[href$="engineering.html"]{--card-bg:#f9ead2;--card-accent:#92570f;--card-border:#efd9b5}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard)[href$="intelligence.html"]{--card-bg:#e1e8f8;--card-accent:#405ca6;--card-border:#d5ddf5}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard)[href$="automation.html"]{--card-bg:#f8e5e2;--card-accent:#a34f44;--card-border:#efcfcb}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard)[href$="modelling.html"]{--card-bg:#dce7f7;--card-accent:#416b9f;--card-border:#cbd9ed}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard)[href$="partnership.html"]{--card-bg:#e0f0fa;--card-accent:#246783;--card-border:#cbe3f1}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard){background:var(--card-bg,#fff);border-color:var(--card-border,var(--line))}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard) .ico{background:#ffffffb8;color:var(--card-accent,var(--violet))}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard) .link,:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard) .labnum,:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard) .problem-tag,:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard) .outcome{color:var(--card-accent,var(--ink))}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard):is(a):hover{border-color:var(--card-accent);box-shadow:0 12px 28px #142d4014}
+:is(main:has(.pagehero) .servicegrid>.servicecard,.home-services .servicegrid>.servicecard,#data-control .servicegrid>.servicecard) .techchips span{background:#ffffffb8;border-color:var(--card-border);color:var(--card-accent)}
+
+.integration-diagram{background:#fff}
+.integration-source:nth-child(3n+1){background:#e0f0e8}
+.integration-source:nth-child(3n+2){background:#f9ead2}
+.integration-source:nth-child(3n+3){background:#dce7f7}
+.integration-source:nth-child(3n+2) svg{color:#92570f}
+.integration-source:nth-child(3n+3) svg{color:#416b9f}
+.integration-storage{background:#dce7f7;border-color:#cbd9ed}
+.integration-storage>svg{color:#416b9f}
+.integration-output:nth-child(1){background:#e1e8f8}
+.integration-output:nth-child(2){background:#e0f0e8}
+.integration-output:nth-child(3){background:#f9ead2}
+
+.process-steps .step:nth-child(1){background:#e0f0e8;border-color:#238575}
+.process-steps .step:nth-child(2){background:#f9ead2;border-color:#b67a29}
+.process-steps .step:nth-child(3){background:#e1e8f8;border-color:#607dc4}
+.process-steps .step:nth-child(4){background:#dce7f7;border-color:#416b9f}
+.process-steps .step:nth-child(2) b{color:#92570f}
+.process-steps .step:nth-child(3) b{color:#405ca6}
+.process-steps .step:nth-child(4) b{color:#416b9f}
+
+/* Service detail panels, approach steps and about cards. */
+main:has(.pagehero) .sidebox{background:#e0f0e8;border-color:#c8e3d7}
+main:has(.pagehero) .sidebox .ico{background:#ffffffb8;color:#176b58}
+main:has(.pagehero) .steps>.step{padding:20px;border-top:3px solid var(--step-accent);border-radius:0 0 10px 10px;background:var(--step-bg)}
+main:has(.pagehero) .steps>.step:nth-child(3n+1){--step-bg:#e0f0e8;--step-accent:#176b58}
+main:has(.pagehero) .steps>.step:nth-child(3n+2){--step-bg:#f9ead2;--step-accent:#92570f}
+main:has(.pagehero) .steps>.step:nth-child(3n+3){--step-bg:#e1e8f8;--step-accent:#405ca6}
+main:has(.pagehero) .steps>.step>b{color:var(--step-accent)}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+1),.profilecard{background:#e0f0e8;border-color:#c8e3d7}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+2),.credentialcard{background:#f9ead2;border-color:#efd9b5}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+3){background:#e1e8f8;border-color:#d5ddf5}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+4){background:#dce7f7;border-color:#cbd9ed}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+2) svg{color:#92570f}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+3) svg{color:#405ca6}
+main:has(.pagehero) .partnerlist>div:nth-child(4n+4) svg{color:#416b9f}
+.profilecard .monogram{background:#ffffffb8;border-color:#c8e3d7;color:#176b58}
+.profilecard .monogram span{color:#176b58}
+
+/* Analytics Lab: pastel summary tiles only, leave charts/tables and semantic values intact. */
+.labmetrics>.labmetric:nth-child(4n+1),#calculator .calc-grid>div:nth-child(4n+1){background:#e0f0e8;border-color:#c8e3d7}
+.labmetrics>.labmetric:nth-child(4n+2),#calculator .calc-grid>div:nth-child(4n+2){background:#f9ead2;border-color:#efd9b5}
+.labmetrics>.labmetric:nth-child(4n+3),#calculator .calc-grid>div:nth-child(4n+3){background:#e1e8f8;border-color:#d5ddf5}
+.labmetrics>.labmetric:nth-child(4n+4),#calculator .calc-grid>div:nth-child(4n+4){background:#dce7f7;border-color:#cbd9ed}
+/* Contact: a subtle panel tint; fields and legal copy stay unchanged. */
+.contact-centered .form{background:#f2f7f5;border-color:#c8e3d7}
+.contact-centered .form :is(input,select,textarea){background:#fff}
