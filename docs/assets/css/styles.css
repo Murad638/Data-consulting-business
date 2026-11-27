@@ -323,14 +323,14 @@ main:has(.pagehero) .partnerlist>div:nth-child(4n+4) svg{color:#416b9f}
 .dp-transform-arrow strong{display:block;margin-top:6px}
 .dp-transform-pause{border:1px solid transparent;background:transparent;color:#526175;min-width:32px;min-height:32px;cursor:pointer;border-radius:6px}
 .dp-transform-pause:hover,.dp-transform-pause:focus-visible{border-color:#cbd8df;background:#fff}
-.dp-transform-play .dp-transform-arrow path{animation:dp-arrow-color 3.2s linear infinite}
-.dp-transform-play .dp-transform-dot{animation:dp-transfer-loop 3.2s linear infinite;stroke:white;stroke-width:1;fill:#b34b52}
-.dp-transform-play .dp-file-list span{animation:dp-old-file 3.2s ease-in-out infinite}
+.dp-transform-play .dp-transform-arrow path{animation:dp-arrow-color 4.2s linear infinite}
+.dp-transform-play .dp-transform-dot{animation:dp-transfer-loop 4.2s linear infinite;stroke:white;stroke-width:1;fill:#b34b52}
+.dp-transform-play .dp-file-list span{animation:dp-old-file 4.2s ease-in-out infinite}
 .dp-transform-play .dp-file-list span:nth-child(2){animation-delay:.12s}
 .dp-transform-play .dp-file-list span:nth-child(3){animation-delay:.24s}
 .dp-transform-play .dp-file-list span:nth-child(4){animation-delay:.36s}
-.dp-transform-play .dp-after{animation:dp-good-panel 3.2s ease-in-out infinite}
-.dp-transform-play .dp-after-mini rect{transform-box:fill-box;transform-origin:bottom;animation:dp-chart-loop 3.2s ease-in-out infinite}
+.dp-transform-play .dp-after{animation:dp-good-panel 4.2s ease-in-out infinite}
+.dp-transform-play .dp-after-mini rect{transform-box:fill-box;transform-origin:bottom;animation:dp-chart-loop 4.2s ease-in-out infinite}
 @keyframes dp-arrow-color{0%,12%{stroke:#b34b52}40%{stroke:#c18a36}62%,100%{stroke:#087f78}}
 @keyframes dp-transfer-loop{0%{opacity:0;transform:translateX(0);fill:#b34b52}12%{opacity:1;fill:#b34b52}40%{fill:#c18a36}65%{opacity:1;transform:translateX(32px);fill:#087f78}75%,100%{opacity:0;transform:translateX(32px);fill:#087f78}}
 @keyframes dp-old-file{0%,100%{border-color:#efcfcb;background:#fff}12%,26%{border-color:#c66b68;background:#fbe8e6}45%{border-color:#efcfcb;background:#fff}}
