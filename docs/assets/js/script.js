@@ -179,3 +179,53 @@ function initMarketingMotion(){
  render(0);syncPause();schedule();
 }
 document.addEventListener('DOMContentLoaded',initMarketingMotion);
+
+
+/* Conversion-focused enhancements; all offers are conditional, never invented client results. */
+function initCustomerJourney(){
+ const motion=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll('.dp-transform').forEach(el=>{
+  const replay=el.querySelector('.dp-transform-replay');if(!replay)return;
+  function play(){el.classList.remove('dp-transform-play');void el.offsetWidth;el.classList.add('dp-transform-play');}
+  replay.hidden=motion.matches;replay.addEventListener('click',play);
+  if(!motion.matches&&'IntersectionObserver' in window){const obs=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){play();obs.disconnect();}},{threshold:.15});obs.observe(el);}
+  motion.addEventListener?.('change',()=>{replay.hidden=motion.matches;if(motion.matches)el.classList.remove('dp-transform-play');});
+ });
+ const previews=document.querySelectorAll('.samplemini,.dp-demo-preview');
+ if('IntersectionObserver' in window){const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('dp-preview-visible');obs.unobserve(e.target);}}),{threshold:.1});previews.forEach(el=>obs.observe(el));}
+ const script=document.querySelector('script[src*="assets/js/script.js"]');
+ if(!script)return;
+ const base=new URL('../../',script.src);
+ const contact=new URL('pages/company/contact.html',base),lab=new URL('pages/analytics/work.html',base);
+ const sampleUrl=new URL(contact);sampleUrl.searchParams.set('sample','1');sampleUrl.hash='inquiry';
+ const file=location.pathname.split('/').pop()||'index.html';
+ const topics={consulting:['profit','Product profitability'],engineering:['reliability','Pipeline reliability'],intelligence:['sales','Sales overview'],automation:['efficiency','Pipeline efficiency'],modelling:['plan','Actual vs plan'],partnership:['reliability','Pipeline reliability']};
+ const topic=file.replace('.html','');
+ const service=topics[topic];
+ if(service){
+  const side=document.querySelector('.sidebox');
+  if(side&&!side.querySelector('.dp-related-demo')){const a=document.createElement('a'),url=new URL(lab);url.searchParams.set('demo',service[0]);a.className='link dp-related-demo';a.href=url.href;a.textContent='Explore example: '+service[1]+' ↗';side.append(a);}
+  sampleUrl.searchParams.set('topic',topic);
+ }
+ document.querySelectorAll('main .cta').forEach(el=>{
+  const h=el.querySelector('h2'),p=el.querySelector('p'),a=el.querySelector('a.button');
+  if(!h||!p||!a)return;
+  if(!el.querySelector('.dp-cta-label')){const label=document.createElement('div');label.className='dp-cta-label';label.textContent='Start small';h.before(label);}
+  h.textContent='One file. One question. Real clarity.';
+  p.textContent='Tell me what you want to understand. A limited free sample may be available; scope and timing are agreed first. Please share only anonymised data after we agree how to handle it.';
+  a.href=sampleUrl.href;a.textContent='Request a sample dashboard ↗';
+ });
+ if(file==='contact.html'){
+  const params=new URLSearchParams(window.previewQuery||location.search);
+  if(params.get('sample')==='1'){
+   const form=document.querySelector('#inquiry'),question=form?.querySelector('textarea[name="question"]');
+   if(form&&question){const box=document.createElement('div');box.className='dp-sample-intent';box.textContent='Request a focused sample: describe one business question and what type of anonymised file you could provide. Do not attach or paste customer data. Availability and scope are confirmed first.';question.placeholder='What would you like a sample dashboard to answer?';form.prepend(box);}
+  }
+  return;
+ }
+ if(file==='privacy.html')return;
+ const sticky=document.createElement('a');sticky.className='dp-mobile-contact';sticky.href=sampleUrl.href;sticky.textContent='Request a sample dashboard ↗';document.body.append(sticky);
+ const update=()=>{const last=document.querySelector('main .cta');const rect=last?.getBoundingClientRect();const nearCTA=rect&&rect.top<innerHeight&&rect.bottom>0;sticky.classList.toggle('dp-mobile-contact-visible',scrollY>550&&!nearCTA);};
+ window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
+}
+document.addEventListener('DOMContentLoaded',initCustomerJourney);
