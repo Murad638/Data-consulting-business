@@ -81,14 +81,11 @@ function initMarketingMotion(){
   });
   const stages=diagram.querySelectorAll(':scope > .integration-stage,:scope > .integration-core,:scope > .integration-storage');
   stages.forEach((stage,i)=>{stage.classList.add('motion-flow-stage');stage.style.setProperty('--stage-delay',i*.8+'s');});
-  let inView=!('IntersectionObserver' in window),paused=motion.matches;
-  const control=document.createElement('button');control.type='button';control.className='integration-motion-control';
-  const controls=document.createElement('div');controls.className='integration-motion-controls';controls.append(control);diagram.after(controls);
-  function sync(){diagram.classList.toggle('motion-flow-running',inView&&!paused&&!motion.matches&&!document.hidden);control.textContent=paused?'Play data flow':'Pause data flow';control.disabled=motion.matches;control.setAttribute('aria-label',control.textContent);}
-  control.addEventListener('click',()=>{paused=!paused;sync();});
+  let inView=!('IntersectionObserver' in window);
+  function sync(){diagram.classList.toggle('motion-flow-running',inView&&!motion.matches&&!document.hidden);}
   if('IntersectionObserver' in window){const flowObserver=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;sync();},{threshold:0});flowObserver.observe(diagram);}
   document.addEventListener('visibilitychange',sync);
-  motion.addEventListener?.('change',()=>{paused=motion.matches;sync();});sync();
+  motion.addEventListener?.('change',sync);sync();
  });
  const root=document.querySelector('.hero-dashboard');
  if(!root)return;
