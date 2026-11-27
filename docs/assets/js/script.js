@@ -67,8 +67,10 @@ function initMarketingMotion(){
   card.classList.add('motion-example-card');
  });
  const visibleTargets=document.querySelectorAll('main .servicecard, main .step, main .feature, main .sidebox, main .profilecard, main .credentialcard, main .partnerlist > div');
+ const touchLayout=matchMedia('(hover:none), (pointer:coarse)');
  const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(e=>{
-  if(e.isIntersecting){e.target.classList.add('motion-enter');observer.unobserve(e.target);}
+  if(e.isIntersecting&&e.intersectionRatio>=.05){e.target.classList.add('motion-enter');if(!touchLayout.matches)observer.unobserve(e.target);}
+  else if(touchLayout.matches)e.target.classList.remove('motion-enter');
  }),{threshold:.05}):null;
  visibleTargets.forEach(el=>{if(observer)observer.observe(el);else el.classList.add('motion-enter');});
  document.querySelectorAll('.integration-diagram').forEach(diagram=>{
@@ -181,10 +183,14 @@ function initCustomerJourney(){
   document.addEventListener('visibilitychange',sync);
   motion.addEventListener?.('change',sync);sync();
  });
- // Replay every miniature chart whenever its complete card is hovered or focused.
+ // Desktop hover and keyboard focus; touch devices replay on each return to view.
  const previews=[...document.querySelectorAll('.samplemini,.dp-demo-tile')];
+ const touchLayout=matchMedia('(hover:none), (pointer:coarse)');
  function animatePreview(el){if(motion.matches)return;el.classList.remove('dp-preview-visible');void el.offsetWidth;el.classList.add('dp-preview-visible');}
- const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){animatePreview(e.target);observer.unobserve(e.target);}}),{threshold:.1}):null;
+ const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting&&e.intersectionRatio>=.1){animatePreview(e.target);if(!touchLayout.matches)observer.unobserve(e.target);}
+  else if(touchLayout.matches)e.target.classList.remove('dp-preview-visible');
+ }),{threshold:.1}):null;
  previews.forEach(el=>{
   const card=el.closest('.samplecard,.dp-demo-tile')||el;
   card.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')animatePreview(el);});
@@ -222,9 +228,6 @@ function initCustomerJourney(){
   }
   return;
  }
- if(file==='privacy.html')return;
- const sticky=document.createElement('a');sticky.className='dp-mobile-contact';sticky.href=sampleUrl.href;sticky.textContent='Request a sample dashboard ↗';document.body.append(sticky);
- const update=()=>{const last=document.querySelector('main .cta');const rect=last?.getBoundingClientRect();const nearCTA=rect&&rect.top<innerHeight&&rect.bottom>0;sticky.classList.toggle('dp-mobile-contact-visible',scrollY>550&&!nearCTA);};
- window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
+
 }
 document.addEventListener('DOMContentLoaded',initCustomerJourney);
