@@ -216,3 +216,45 @@ main:has(.pagehero) .partnerlist>div:nth-child(4n+4) svg{color:#416b9f}
 /* Contact: a subtle panel tint; fields and legal copy stay unchanged. */
 .contact-centered .form{background:#f2f7f5;border-color:#c8e3d7}
 .contact-centered .form :is(input,select,textarea){background:#fff}
+
+
+/* Shared marketing motion: no new background palette or layout changes. */
+.motion-card-copy{display:grid;align-items:start}
+.motion-card-copy>p{grid-area:1/1;transition:opacity .2s ease,transform .25s ease}
+.motion-example{opacity:0;transform:translateY(5px);pointer-events:none;color:var(--ink)}
+.motion-example-label{display:block;font-size:10px;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;font-weight:750;color:var(--card-accent,#087f78);margin-bottom:5px}
+.motion-example-card .ico svg,.servicecard .link>span{transition:transform .25s ease}
+.motion-example-card:focus-visible .motion-card-description{opacity:0}
+.motion-example-card:focus-visible .motion-example{opacity:1;transform:none}
+.motion-example-card:focus-visible .ico svg{transform:translateY(-2px) rotate(-5deg)}
+@media(hover:hover) and (pointer:fine){
+ .motion-example-card:hover .motion-card-description{opacity:0}
+ .motion-example-card:hover .motion-example{opacity:1;transform:none}
+ .motion-example-card:hover .ico svg{transform:translateY(-2px) rotate(-5deg)}
+ a.servicecard:hover .link>span{transform:translate(3px,-2px)}
+}
+@media(hover:none),(pointer:coarse){
+ .motion-card-copy{display:block}
+ .motion-card-copy>p{opacity:1;transform:none}
+ .motion-card-copy .motion-example{margin-top:10px}
+}
+.motion-enter{animation:dp-enter .48s ease-out both}
+@keyframes dp-enter{from{opacity:.65;translate:0 8px}to{opacity:1;translate:0 0}}
+.hero-dashboard-controls{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:15px;border-top:1px solid var(--line);padding-top:12px}
+.hero-dashboard-controls button{appearance:none;min-height:36px;border:1px solid #cbd8df;border-radius:7px;background:#fff;color:#45566a;font-family:inherit;font-size:12px;font-weight:600;line-height:1.35;padding:7px 11px;cursor:pointer;transition:background .2s,border-color .2s}
+.hero-dashboard-controls button[aria-pressed=true]{background:#08766b;color:#fff;border-color:#08766b}
+.hero-dashboard-controls button:hover:not([aria-pressed=true]){background:#e0f0e8;border-color:#98cbbd}
+.hero-dashboard-controls .hero-dashboard-pause{margin-left:auto}
+.hero-dashboard .hero-chart-alternate{display:flex;align-items:center;justify-content:center;background:none}
+.hero-chart-alternate svg{width:100%;height:100%;max-width:100%;display:block}
+.motion-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.motion-flow-dot{fill:#087f78;stroke:none;opacity:0}
+.integration-diagram.motion-enter .motion-flow-dot{animation:dp-flow-dot 1s ease-in-out 2 both;animation-delay:var(--flow-delay,0s)}
+.integration-diagram.motion-enter .motion-flow-stage{animation:dp-flow-stage .85s ease-out 2;animation-delay:var(--stage-delay,0s)}
+@keyframes dp-flow-dot{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(21px);opacity:0}}
+@keyframes dp-flow-stage{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 3px #77bcae66}}
+@media(max-width:680px){.hero-dashboard-controls button{min-height:44px;padding:8px 10px}.hero-dashboard-controls .hero-dashboard-pause{margin-left:0}}
+@media(prefers-reduced-motion:reduce){
+ .motion-enter,.integration-diagram.motion-enter .motion-flow-stage,.integration-diagram.motion-enter .motion-flow-dot{animation:none!important;translate:none!important}
+ .motion-example-card .ico svg,.servicecard .link>span,.motion-card-copy>p,.hero-dashboard-controls button{transition:none!important;transform:none!important}
+}
