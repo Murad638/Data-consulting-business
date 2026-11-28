@@ -59,3 +59,15 @@ html[data-theme="dark"] :is(.lab,.simulator,.explorer) :is(input,select,button){
 html[data-theme="dark"] .integration-core{color:white}
 html[data-theme="dark"] .integration-core .prodelta-wordmark{--brand-delta:#5cc9b8}
 html[data-theme="dark"] a:focus-visible,html[data-theme="dark"] button:focus-visible,html[data-theme="dark"] input:focus-visible,html[data-theme="dark"] select:focus-visible,html[data-theme="dark"] textarea:focus-visible,html[data-theme="dark"] summary:focus-visible{outline-color:#63d6c3}
+
+/* Small accessible theme control, independent of the existing navigation. */
+.theme-switch[hidden]{display:none}
+.theme-switch{display:inline-grid;place-items:center;flex:0 0 44px;width:44px;height:44px;padding:10px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--ink);cursor:pointer}
+.theme-switch svg{width:21px;height:21px}
+.theme-switch .theme-sun{display:none}
+html[data-theme="dark"] .theme-switch .theme-sun{display:block}
+html[data-theme="dark"] .theme-switch .theme-moon{display:none}
+.theme-switch:hover{background:var(--soft);border-color:var(--violet)}
+@media(min-width:1051px) and (max-width:1200px){.navrow{gap:10px}.nav{gap:12px}.navcta{padding-inline:10px}.brand .prodelta-wordmark{font-size:22px}}
+@media(max-width:1050px){.navrow .brand{margin-right:auto}.navrow .theme-switch{order:1}.navrow .navtoggle{order:2}}
+@media(max-width:380px){.navrow{gap:8px}.brand .prodelta-wordmark{font-size:20px}.navtoggle{padding-inline:8px}}
