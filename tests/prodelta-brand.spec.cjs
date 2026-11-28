@@ -44,7 +44,7 @@ test('ProDelta dark branding, homepage story and responsive layout', async ({pag
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
   await page.goto('pages/analytics/work.html');
   await expect(page.locator('.lab')).toBeVisible();
-  await expect(page.locator('.lab')).toHaveCSS('background-color','rgb(255, 255, 255)');
+  await expect(page.locator('.lab')).toHaveCSS('background-color','rgb(24, 33, 31)');
   await page.getByRole('button',{name:'Switch to light theme'}).click();
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme','light');
@@ -77,4 +77,34 @@ test('dark theme all pages, local links and analytics tooltip interaction',async
   await page.evaluate(()=>window.scrollBy(0,100));
   await expect(tip).toBeHidden();
   expect(errors).toEqual([]);
+});
+
+test('integration and all nine Analytics Lab panels follow selected theme',async({page},info)=>{
+ await page.goto('./');
+ const diagram=page.locator('.integration-diagram');
+ await expect(diagram).toHaveCSS('background-color','rgb(255, 255, 255)');
+ await page.getByRole('button',{name:'Switch to dark theme'}).click();
+ await expect(diagram).toHaveCSS('background-color','rgb(24, 33, 31)');
+ await expect(diagram.locator('.integration-source').first()).toHaveCSS('background-color','rgb(27, 54, 48)');
+ await diagram.screenshot({path:info.outputPath('prodelta-dark-integration.png'),animations:'disabled'});
+ await page.goto('pages/analytics/work.html');
+ const lab=page.locator('[data-lab]');
+ await expect(lab).toHaveCSS('background-color','rgb(24, 33, 31)');
+ await expect(lab.locator('.labmetric').first()).toHaveCSS('background-color','rgb(27, 54, 48)');
+ await expect(lab.locator('.subchart').first()).toHaveCSS('background-color','rgb(20, 29, 27)');
+ await expect(lab.locator('svg text[fill="#405569"]').first()).toHaveCSS('fill','rgb(168, 187, 181)');
+ await lab.screenshot({path:info.outputPath('prodelta-dark-analytics.png'),animations:'disabled'});
+ for(const key of ['sales','funnel','profit','product','reliability','efficiency','customers','plan','billing']){
+  await lab.locator('[data-demo="'+key+'"]').click();
+  await expect(lab.locator('.labmetric')).toHaveCount(4);
+  await lab.locator('[data-period]').selectOption('first');
+  await lab.locator('[data-segment]').selectOption({index:1});
+  await expect(lab.locator('tbody tr')).toHaveCount(1);
+  await expect(lab.locator('[data-results]')).not.toContainText(/NaN|Infinity|undefined/);
+  await lab.locator('[data-labreset]').click();
+ }
+ await page.getByRole('button',{name:'Switch to light theme'}).click();
+ await expect(lab).toHaveCSS('background-color','rgb(255, 255, 255)');
+ await page.goto('./');
+ await expect(diagram).toHaveCSS('background-color','rgb(255, 255, 255)');
 });
