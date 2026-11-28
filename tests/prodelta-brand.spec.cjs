@@ -1,0 +1,23 @@
+const {test,expect}=require('@playwright/test');
+test('ProDelta dark branding, homepage story and responsive layout', async ({page},info)=>{
+  await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+  await expect(page.locator('.site-header .brand')).toHaveAccessibleName('ProDelta home');
+  await expect(page.locator('.site-header .brand')).toContainText('PROΔELTA');
+  await expect(page.locator('body')).toHaveCSS('background-color','rgb(16, 20, 19)');
+  await expect(page.locator('.hero-dashboard')).toHaveCSS('background-color','rgb(255, 255, 255)');
+  await expect(page.locator('.prodelta-story')).toContainText('Professionalism for us.');
+  await expect(page.locator('.prodelta-story')).toContainText('Profit for you.');
+  await expect(page.locator('.prodelta-story h2')).toHaveText('Together, we make a positive difference.');
+  await page.locator('.prodelta-story').scrollIntoViewIfNeeded();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+  await page.locator('.prodelta-story').screenshot({path:info.outputPath('prodelta-story.png')});
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+  await page.screenshot({path:info.outputPath('prodelta-homepage.png'),fullPage:true,animations:'disabled'});
+  await page.goto('pages/company/contact.html');
+  await expect(page.locator('.site-header .brand')).toHaveAccessibleName('ProDelta home');
+  await expect(page.locator('input[name="_subject"]')).toHaveValue('ProDelta website inquiry');
+  await page.goto('pages/analytics/work.html');
+  await expect(page.locator('.lab')).toBeVisible();
+  await expect(page.locator('.lab')).toHaveCSS('background-color','rgb(255, 255, 255)');
+});
