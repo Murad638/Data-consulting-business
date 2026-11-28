@@ -73,9 +73,9 @@ html[data-theme="dark"] .dp-transform-arrow{color:#5cc9b8}
 html[data-theme="dark"] .dp-transform-pause{color:#b3bfbd}
 html[data-theme="dark"] .dp-transform-pause:hover{background:#263733}
 /* Retain light surfaces for the remaining preview widgets. */
-html[data-theme="dark"] :is(.hero-dashboard,.simulator,.explorer,.dp-after-mini,.samplemini,.demo-chart,.flowpanel){--ink:#10243a;--muted:#526175;--violet:#087f78;--violet-dark:#065e59;--mint:#137c66;--line:#dce4eb;--paper:#f5f7fa;--white:#fff;--soft:#e5f3f0;color:#10243a;color-scheme:light}
-html[data-theme="dark"] :is(.hero-dashboard,.simulator,.explorer,.dp-after-mini,.flowpanel){background:#fff}
-html[data-theme="dark"] :is(.simulator,.explorer) :is(input,select,button){color-scheme:light}
+html[data-theme="dark"] :is(.hero-dashboard,.explorer,.samplemini,.demo-chart,.flowpanel){--ink:#10243a;--muted:#526175;--violet:#087f78;--violet-dark:#065e59;--mint:#137c66;--line:#dce4eb;--paper:#f5f7fa;--white:#fff;--soft:#e5f3f0;color:#10243a;color-scheme:light}
+html[data-theme="dark"] :is(.hero-dashboard,.explorer,.flowpanel){background:#fff}
+html[data-theme="dark"] .explorer :is(input,select,button){color-scheme:light}
 html[data-theme="dark"] .integration-core{color:white}
 html[data-theme="dark"] .integration-core .prodelta-wordmark{--brand-delta:#5cc9b8}
 html[data-theme="dark"] a:focus-visible,html[data-theme="dark"] button:focus-visible,html[data-theme="dark"] input:focus-visible,html[data-theme="dark"] select:focus-visible,html[data-theme="dark"] textarea:focus-visible,html[data-theme="dark"] summary:focus-visible{outline-color:#63d6c3}
@@ -93,7 +93,7 @@ html[data-theme="dark"] .theme-switch .theme-moon{display:none}
 @media(max-width:380px){.navrow{gap:8px}.brand .prodelta-wordmark{font-size:20px}.navtoggle{padding-inline:8px}}
 
 /* Approved dark integration and Analytics Lab palette. Light mode unchanged. */
-html[data-theme="dark"] :is(.integration-diagram,.lab){
+html[data-theme="dark"] :is(.integration-diagram,.lab,.simulator){
  --ink:#eef4f2;--muted:#a8bbb5;--violet:#66d5c4;--mint:#79d6af;
  --line:#35443f;--white:#18211f;--paper:#131c1a;--soft:#1b3630;
  --pd-sub:#131c1a;--pd-grid:#394944;--pd-axis:#718981;
@@ -185,3 +185,42 @@ html[data-theme="dark"] .lab :is(.chart-legend i,.lbar i,.diverging-track i)[sty
 html[data-theme="dark"] .lab svg [fill="#64748b"]{fill:#a7b7cb}
 html[data-theme="dark"] .lab svg [stroke="#64748b"]{stroke:#a7b7cb}
 html[data-theme="dark"] .lab :is(.chart-legend i,.lbar i,.diverging-track i)[style*="background:#64748b"]{background:#a7b7cb!important}
+
+/* Dark calculator and readable transformation, without changing light mode. */
+html[data-theme="dark"] .dp-before .dp-file-list span{
+ background:#261f1e;border-color:#694642;color:#f1e8e6;
+}
+html[data-theme="dark"] .dp-before .dp-file-list b{color:#f0a99e}
+html[data-theme="dark"] .dp-before .dp-kicker{color:#f0a99e}
+html[data-theme="dark"] .dp-transform-play .dp-file-list span{animation-name:pd-dark-old-file}
+@keyframes pd-dark-old-file{
+ 0%,45%,100%{background:#261f1e;border-color:#694642}
+ 12%,26%{background:#422b28;border-color:#b77b70}
+}
+html[data-theme="dark"] .dp-after-mini{background:#15241f;border-color:#35594f;color:var(--ink)}
+html[data-theme="dark"] .dp-after-mini :is(small,span){color:#a8bbb5}
+html[data-theme="dark"] .dp-after-mini svg [stroke="#e0e8e8"]{stroke:#35443f}
+html[data-theme="dark"] .dp-after-mini svg [fill="#80bfb2"]{fill:#66b9aa}
+html[data-theme="dark"] #calculator .simulator{background:#18211f;border-color:var(--line);color:var(--ink)}
+html[data-theme="dark"] #calculator .result{background:#141d1b;border:1px solid var(--line)}
+html[data-theme="dark"] #calculator :is(.slider-value,.sliderlabel span){color:var(--pd-teal)}
+html[data-theme="dark"] #calculator .scenario-reset{background:var(--pd-mint);color:var(--pd-teal);border-color:#459b8c}
+html[data-theme="dark"] #calculator .scenario-reset:hover{background:#24483d}
+html[data-theme="dark"] #calculator input[type="range"]{color-scheme:dark;accent-color:#66d5c4}
+html[data-theme="dark"] #calculator .result>strong{color:var(--mint)}
+html[data-theme="dark"] #calculator .result>strong.loss{color:var(--pd-chart-red)}
+html[data-theme="dark"] #calculator .calc-grid>div{border-color:var(--line)}
+html[data-theme="dark"] #calculator .calc-grid>div:nth-child(4n+1){background:var(--pd-mint)}
+html[data-theme="dark"] #calculator .calc-grid>div:nth-child(4n+2){background:var(--pd-amber)}
+html[data-theme="dark"] #calculator .calc-grid>div:nth-child(4n+3){background:var(--pd-purple)}
+html[data-theme="dark"] #calculator .calc-grid>div:nth-child(4n+4){background:var(--pd-blue)}
+html[data-theme="dark"] #calculator :is(.calc-grid small,.metric-explanation){color:var(--muted)}
+html[data-theme="dark"] #calculator .metric-help{background:#202d29;border-color:#718981;color:var(--ink);color-scheme:dark}
+html[data-theme="dark"] #calculator .metric-help:is(:hover,:focus-visible){border-color:var(--pd-teal);color:var(--pd-teal)}
+html[data-theme="dark"] #calculator .result .track{background:#293a35}
+html[data-theme="dark"] #calculator .costlegend{color:var(--ink)}
+html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#146c94"]{background:#7ba8ec!important}
+html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#d97706"]{background:#f0ba6b!important}
+html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#64748b"]{background:#a7b7cb!important}
+html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#b53a43"]{background:#f08da3!important}
+html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#087f78"]{background:#66d5c4!important}
