@@ -234,3 +234,14 @@ html[data-theme="dark"] #calculator .slider-value{font-size:16px}
 @media (min-width: 1100px) {
   .cta .dp-cta-label + h2 { max-width: none; font-size: clamp(30px, 3.2vw, 44px); white-space: nowrap; }
 }
+
+/* Responsive marketing headings: use the available width before wrapping. */
+main .headrow h2,
+main .pagehero h1 { text-wrap: balance; }
+@media (min-width: 1000px) {
+  main .headrow, main .headrow h2 { max-width: none; }
+  main .pagehero:not(.profilehero) h1 {
+    max-width: none;
+    font-size: clamp(44px, 4.5vw, 64px);
+  }
+}
