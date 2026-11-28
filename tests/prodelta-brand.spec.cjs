@@ -108,3 +108,34 @@ test('integration and all nine Analytics Lab panels follow selected theme',async
  await page.goto('./');
  await expect(diagram).toHaveCSS('background-color','rgb(255, 255, 255)');
 });
+
+test('default light even with dark system preference; dark calculator and animated filenames',async({page},info)=>{
+ await page.emulateMedia({colorScheme:'dark'});
+ await page.goto('./');
+ await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+ await page.getByRole('button',{name:'Switch to dark theme'}).click();
+ const files=page.locator('.dp-file-list span');
+ await files.first().scrollIntoViewIfNeeded();
+ await expect(files).toHaveCount(4);
+ await expect(files.first()).toHaveCSS('color','rgb(241, 232, 230)');
+ await expect.poll(()=>files.first().evaluate(el=>{const s=getComputedStyle(el);return ['rgb(38, 31, 30)','rgb(66, 43, 40)'].includes(s.backgroundColor)||s.animationName==='pd-dark-old-file'})).toBeTruthy();
+ await page.goto('pages/analytics/work.html');
+ const calc=page.locator('#calculator');
+ await expect(calc.locator('.simulator')).toHaveCSS('background-color','rgb(24, 33, 31)');
+ await expect(calc.locator('.result')).toHaveCSS('background-color','rgb(20, 29, 27)');
+ await expect(calc.locator('#profit')).toHaveText('€3,600');
+ await calc.locator('#range5').evaluate(el=>{el.value='20';el.dispatchEvent(new Event('input',{bubbles:true}))});
+ await expect(calc.locator('#profit')).toHaveText('€4,880');
+ await calc.locator('[data-reset]').click();
+ await expect(calc.locator('#profit')).toHaveText('€3,600');
+ for(const width of info.project.name==='mobile'?[320,375,390,430]:info.project.name==='tablet'?[820,1024]:[1280,1440,1920]){
+  await page.setViewportSize({width,height:900});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)).toBeLessThanOrEqual(2);
+  await expect(calc.locator('.result')).toBeVisible();
+ }
+ await calc.screenshot({path:info.outputPath('prodelta-dark-calculator.png'),animations:'disabled'});
+ await page.getByRole('button',{name:'Switch to light theme'}).click();
+ await expect(calc.locator('.simulator')).toHaveCSS('background-color','rgb(255, 255, 255)');
+ await page.reload();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+});
