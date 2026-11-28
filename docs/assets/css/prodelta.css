@@ -203,11 +203,11 @@ html[data-theme="dark"] .dp-after-mini svg [stroke="#e0e8e8"]{stroke:#35443f}
 html[data-theme="dark"] .dp-after-mini svg [fill="#80bfb2"]{fill:#66b9aa}
 html[data-theme="dark"] #calculator .simulator{background:#18211f;border-color:var(--line);color:var(--ink)}
 html[data-theme="dark"] #calculator .result{background:#141d1b;border:1px solid var(--line)}
-html[data-theme="dark"] #calculator :is(.slider-value,.sliderlabel span){color:var(--pd-teal)}
+html[data-theme="dark"] #calculator :is(.slider-value,.sliderlabel span){color:#f5faf8;font-weight:750;font-variant-numeric:tabular-nums}
 html[data-theme="dark"] #calculator .scenario-reset{background:var(--pd-mint);color:var(--pd-teal);border-color:#459b8c}
 html[data-theme="dark"] #calculator .scenario-reset:hover{background:#24483d}
-html[data-theme="dark"] #calculator input[type="range"]{color-scheme:dark;accent-color:#66d5c4}
-html[data-theme="dark"] #calculator .result>strong{color:var(--mint)}
+html[data-theme="dark"] #calculator input[type="range"]{color-scheme:dark;accent-color:#288e80}
+html[data-theme="dark"] #calculator .result>strong{color:#a0ebcc;font-variant-numeric:tabular-nums}
 html[data-theme="dark"] #calculator .result>strong.loss{color:var(--pd-chart-red)}
 html[data-theme="dark"] #calculator .calc-grid>div{border-color:var(--line)}
 html[data-theme="dark"] #calculator .calc-grid>div:nth-child(4n+1){background:var(--pd-mint)}
@@ -224,3 +224,8 @@ html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="ba
 html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#64748b"]{background:#a7b7cb!important}
 html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#b53a43"]{background:#f08da3!important}
 html[data-theme="dark"] #calculator :is(#costbars span,#costlegend i)[style*="background:#087f78"]{background:#66d5c4!important}
+
+/* Calculator hierarchy: quiet slider controls, high-contrast figures. */
+html[data-theme="dark"] #calculator :is(.calc-grid b,#margin,.costlegend b){color:#f5faf8;font-weight:750;font-variant-numeric:tabular-nums}
+html[data-theme="dark"] #calculator .slider-value{font-size:16px}
+@media(max-width:680px){html[data-theme="dark"] #calculator .slider-value{font-size:15px}}
