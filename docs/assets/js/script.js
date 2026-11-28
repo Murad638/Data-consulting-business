@@ -216,7 +216,7 @@ function initCustomerJourney(){
   const h=el.querySelector('h2'),p=el.querySelector('p'),a=el.querySelector('a.button');
   if(!h||!p||!a)return;
   if(!el.querySelector('.dp-cta-label')){const label=document.createElement('div');label.className='dp-cta-label';label.textContent='Start small';h.before(label);}
-  h.textContent='One file. One question. Real clarity.';
+  h.textContent='One file. One question. Clear answers.';
   p.textContent='Tell me what you want to understand. A limited free sample may be available; scope and timing are agreed first. Please share only anonymised data after we agree how to handle it.';
   a.href=sampleUrl.href;a.textContent='Request a sample dashboard ↗';
  });
