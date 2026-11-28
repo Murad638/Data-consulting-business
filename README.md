@@ -1,4 +1,4 @@
-# DataProfit
+# ProDelta
 
 Independent data consulting website for small and growing businesses, based in Estonia and working in English.
 
@@ -6,7 +6,7 @@ Independent data consulting website for small and growing businesses, based in E
 
 ## Overview
 
-DataProfit presents consulting, engineering, business intelligence, reporting automation, modelling and ongoing data partnership services. Its Analytics Lab demonstrates nine interactive analytics models and a profit scenario calculator using synthetic data. The consultation form sends inquiries through FormSubmit using a masked recipient identifier.
+ProDelta presents consulting, engineering, business intelligence, reporting automation, modelling and ongoing data partnership services. Its Analytics Lab demonstrates nine interactive analytics models and a profit scenario calculator using synthetic data. The consultation form sends inquiries through FormSubmit using a masked recipient identifier.
 
 The website uses plain HTML, CSS and JavaScript and runs on GitHub Pages. No application backend, database or customer dataset is required. Node.js and Playwright are development and testing tools only.
 
